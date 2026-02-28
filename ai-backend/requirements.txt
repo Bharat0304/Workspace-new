@@ -1,0 +1,54 @@
+# WorkSpace AI Backend Requirements
+# Production-grade AI backend for cognitive performance system
+
+# Core Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# Database
+motor==3.3.2
+pymongo==4.6.0
+
+# Data Validation & Serialization
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Authentication
+python-jose[cryptography]==3.3.0
+requests==2.31.0
+
+# Image Processing (for posture/screen analysis)
+Pillow==10.1.0
+
+# Computer Vision (for posture detection - optional)
+# opencv-python==4.8.1.78
+# mediapipe==0.10.9
+
+# AI/ML Libraries (optional - depends on your AI modules)
+# torch==2.1.1
+# torchvision==0.16.1
+# transformers==4.36.0
+# numpy==1.24.4
+
+# Development & Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx==0.25.2
+
+# Logging & Monitoring
+structlog==23.2.0
+
+# Environment Management
+python-dotenv==1.0.0
+
+# Async Utilities
+aiofiles==23.2.1
+
+# CORS Support
+python-multipart==0.0.6
+
+# Date/Time Utilities
+python-dateutil==2.8.2
+
+# Validation Extras
+email-validator==2.1.0

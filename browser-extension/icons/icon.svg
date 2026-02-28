@@ -1,0 +1,16 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="56" fill="#6366f1" />
+  
+  <!-- Brain/AI symbol -->
+  <path d="M 40 50 Q 30 40, 40 30 Q 50 20, 60 30 Q 70 20, 80 30 Q 90 40, 80 50 Q 90 60, 80 70 Q 70 80, 60 70 Q 50 80, 40 70 Q 30 60, 40 50" 
+        fill="white" opacity="0.9"/>
+  
+  <!-- Target/focus symbol -->
+  <circle cx="64" cy="64" r="20" fill="none" stroke="white" stroke-width="3"/>
+  <circle cx="64" cy="64" r="10" fill="none" stroke="white" stroke-width="2"/>
+  <circle cx="64" cy="64" r="4" fill="white"/>
+  
+  <!-- Text WS -->
+  <text x="64" y="105" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">WS</text>
+</svg>

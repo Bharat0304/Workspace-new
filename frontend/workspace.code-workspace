@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../../Downloads/WORKSPACE-COMPANION-main 2/backend2"
+		},
+		{
+			"path": "../../../Downloads/WORKSPACE-COMPANION-main 2/electron"
+		},
+		{
+			"path": "../../../Downloads/WORKSPACE-COMPANION-main 2/src"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "workspace",
+		"liveServer.settings.port": 5502
+	}
+}

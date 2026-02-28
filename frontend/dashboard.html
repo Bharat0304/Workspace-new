@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkSpace AI Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .dashboard-header {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f59e0b;
+        }
+
+        .session-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .session-status {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .session-active {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .session-inactive {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .dashboard-main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .session-controls {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: #f59e0b;
+            color: #000000;
+        }
+
+        .btn-primary:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .ai-card {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .ai-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .ai-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .ai-card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #f59e0b;
+        }
+
+        .ai-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        .ai-status.inactive {
+            background: #6b7280;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .metric {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .metric-unit {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            margin-left: 0.25rem;
+        }
+
+        .activity-log {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            border-left: 3px solid #f59e0b;
+            font-size: 0.875rem;
+        }
+
+        .log-time {
+            color: #9ca3af;
+            font-size: 0.75rem;
+        }
+
+        .log-message {
+            color: #ffffff;
+            margin-top: 0.25rem;
+        }
+
+        .voice-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .voice-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            font-size: 0.875rem;
+        }
+
+        .recording {
+            animation: pulse 1s infinite;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Scrollbar styling */
+        .activity-log::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .activity-log::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .activity-log::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .activity-log::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo">
+                    WORK<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 21h6M12 3a6 6 0 0 0-4 10.5V17h8v-3.5A6 6 0 0 0 12 3z"/>
+                        <line x1="10" y1="17" x2="10" y2="21"/>
+                        <line x1="14" y1="17" x2="14" y2="21"/>
+                    </svg>SPACE AI
+                </div>
+                <div class="session-info">
+                    <span id="userId">User: Guest</span>
+                    <div id="sessionStatus" class="session-status session-inactive">
+                        Session Inactive
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-main">
+            <!-- Session Controls -->
+            <section class="session-controls">
+                <h2>Session Management</h2>
+                <div class="control-buttons">
+                    <button id="startSession" class="btn btn-primary">🚀 Start Session</button>
+                    <button id="stopSession" class="btn btn-danger hidden">⏹️ Stop Session</button>
+                    <button id="pauseSession" class="btn btn-secondary hidden">⏸️ Pause</button>
+                    <button id="resumeSession" class="btn btn-secondary hidden">▶️ Resume</button>
+                </div>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-label">Session Duration</div>
+                        <div class="metric-value">
+                            <span id="sessionDuration">00:00:00</span>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Productivity Score</div>
+                        <div class="metric-value">
+                            <span id="productivityScore">0</span>
+                            <span class="metric-unit">%</span>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Focus Level</div>
+                        <div class="metric-value">
+                            <span id="focusLevel">0</span>
+                            <span class="metric-unit">%</span>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Fatigue Level</div>
+                        <div class="metric-value">
+                            <span id="fatigueLevel">0</span>
+                            <span class="metric-unit">%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Features Grid -->
+            <div class="ai-grid">
+                <!-- Screen Analysis -->
+                <div class="ai-card">
+                    <div class="ai-card-header">
+                        <h3 class="ai-card-title">🖥️ Screen Analysis</h3>
+                        <div id="screenStatus" class="ai-status inactive"></div>
+                    </div>
+                    <p>Real-time screen content analysis for productivity tracking</p>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <div class="metric-label">Content Type</div>
+                            <div class="metric-value" id="contentType">-</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Distraction</div>
+                            <div class="metric-value">
+                                <span id="distractionScore">0</span>
+                                <span class="metric-unit">%</span>
+                            </div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Text Density</div>
+                            <div class="metric-value">
+                                <span id="textDensity">0</span>
+                                <span class="metric-unit">%</span>
+                            </div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Code Detected</div>
+                            <div class="metric-value" id="codeDetected">No</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Face Analysis -->
+                <div class="ai-card">
+                    <div class="ai-card-header">
+                        <h3 class="ai-card-title">👤 Face Analysis</h3>
+                        <div id="faceStatus" class="ai-status inactive"></div>
+                    </div>
+                    <p>Biometric analysis for engagement and fatigue detection</p>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <div class="metric-label">Face Present</div>
+                            <div class="metric-value" id="facePresent">No</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Gaze Direction</div>
+                            <div class="metric-value" id="gazeDirection">-</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Head Tilt</div>
+                            <div class="metric-value">
+                                <span id="headTilt">0</span>
+                                <span class="metric-unit">°</span>
+                            </div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Blink Rate</div>
+                            <div class="metric-value">
+                                <span id="blinkRate">0</span>
+                                <span class="metric-unit">Hz</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Voice Assistant -->
+                <div class="ai-card">
+                    <div class="ai-card-header">
+                        <h3 class="ai-card-title">🎤 Voice Assistant</h3>
+                        <div id="voiceStatus" class="ai-status inactive"></div>
+                    </div>
+                    <p>AI-powered voice interaction and commands</p>
+                    <div class="voice-controls">
+                        <button id="voiceBtn" class="btn btn-primary">🎤 Start Listening</button>
+                        <div id="voiceIndicator" class="voice-indicator hidden">
+                            <div class="recording">🔴 Recording...</div>
+                        </div>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <div class="metric-label">Last Command</div>
+                            <div class="metric-value" id="lastCommand">-</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Response Time</div>
+                            <div class="metric-value">
+                                <span id="responseTime">0</span>
+                                <span class="metric-unit">ms</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session Analytics -->
+                <div class="ai-card">
+                    <div class="ai-card-header">
+                        <h3 class="ai-card-title">📊 Session Analytics</h3>
+                        <div class="ai-status"></div>
+                    </div>
+                    <p>Real-time productivity insights and patterns</p>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <div class="metric-label">Total Events</div>
+                            <div class="metric-value" id="totalEvents">0</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Focus Time</div>
+                            <div class="metric-value">
+                                <span id="focusTime">0</span>
+                                <span class="metric-unit">min</span>
+                            </div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Break Time</div>
+                            <div class="metric-value">
+                                <span id="breakTime">0</span>
+                                <span class="metric-unit">min</span>
+                            </div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Efficiency</div>
+                            <div class="metric-value">
+                                <span id="efficiency">0</span>
+                                <span class="metric-unit">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Log -->
+            <section class="activity-log">
+                <h3>Activity Log</h3>
+                <div id="activityLog">
+                    <div class="log-entry">
+                        <div class="log-time">System</div>
+                        <div class="log-message">Dashboard initialized. Ready to start AI monitoring session.</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

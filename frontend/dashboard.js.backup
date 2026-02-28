@@ -1,0 +1,511 @@
+// WorkSpace AI Dashboard - Complete AI Integration
+class AIDashboard {
+    constructor() {
+        this.sessionActive = false;
+        this.sessionPaused = false;
+        this.sessionStartTime = null;
+        this.sessionData = {
+            userId: 'user_' + Math.random().toString(36).substr(2, 9),
+            sessionId: null,
+            screenAnalysis: [],
+            faceAnalysis: [],
+            voiceCommands: [],
+            metrics: {
+                productivity: 0,
+                focus: 0,
+                fatigue: 0,
+                totalEvents: 0,
+                focusTime: 0,
+                breakTime: 0,
+                efficiency: 0
+            }
+        };
+        
+        this.intervals = {
+            sessionTimer: null,
+            screenAnalysis: null,
+            faceAnalysis: null,
+            metricsUpdate: null
+        };
+
+        this.apiEndpoints = {
+            aiBackend: 'http://localhost:8005',
+            voiceBackend: 'http://localhost:4001'
+        };
+
+        this.init();
+    }
+
+    init() {
+        this.bindEvents();
+        this.updateUI();
+        this.logActivity('System', 'Dashboard initialized. Ready to start AI monitoring session.');
+        
+        // Set up extension communication
+        this.listenForExtensionMessages();
+    }
+
+    bindEvents() {
+        // Session controls
+        document.getElementById('startSession').addEventListener('click', () => this.startSession());
+        document.getElementById('stopSession').addEventListener('click', () => this.stopSession());
+        document.getElementById('pauseSession').addEventListener('click', () => this.pauseSession());
+        document.getElementById('resumeSession').addEventListener('click', () => this.resumeSession());
+
+        // Voice assistant
+        document.getElementById('voiceBtn').addEventListener('click', () => this.toggleVoiceAssistant());
+    }
+
+    async startSession() {
+        try {
+            this.sessionData.sessionId = 'session_' + Date.now();
+            this.sessionStartTime = Date.now();
+            this.sessionActive = true;
+            this.sessionPaused = false;
+
+            // Start all AI monitoring
+            await this.startScreenAnalysis();
+            await this.startFaceAnalysis();
+            this.startMetricsUpdate();
+            
+            // Notify browser extension
+            this.notifyExtension('session_started', {
+                sessionId: this.sessionData.sessionId,
+                timestamp: Date.now()
+            });
+            
+            // Update UI
+            this.updateSessionUI();
+            this.logActivity('Session', `Started session ${this.sessionData.sessionId}`);
+            
+            // Start session timer
+            this.intervals.sessionTimer = setInterval(() => this.updateSessionTimer(), 1000);
+            
+        } catch (error) {
+            this.logActivity('Error', `Failed to start session: ${error.message}`);
+        }
+    }
+
+    stopSession() {
+        this.sessionActive = false;
+        this.sessionPaused = false;
+
+        // Clear all intervals
+        Object.values(this.intervals).forEach(interval => {
+            if (interval) clearInterval(interval);
+        });
+
+        // Update UI
+        this.updateSessionUI();
+        this.logActivity('Session', `Session ${this.sessionData.sessionId} ended`);
+        
+        // Show session summary
+        this.showSessionSummary();
+    }
+
+    pauseSession() {
+        this.sessionPaused = true;
+        this.updateSessionUI();
+        this.logActivity('Session', 'Session paused');
+    }
+
+    resumeSession() {
+        this.sessionPaused = false;
+        this.updateSessionUI();
+        this.logActivity('Session', 'Session resumed');
+    }
+
+    async startScreenAnalysis() {
+        this.logActivity('Screen Analysis', 'Starting real-time screen monitoring...');
+        document.getElementById('screenStatus').classList.remove('inactive');
+
+        this.intervals.screenAnalysis = setInterval(async () => {
+            if (!this.sessionActive || this.sessionPaused) return;
+
+            try {
+                const screenshot = await this.captureScreen();
+                if (screenshot) {
+                    const analysis = await this.analyzeScreen(screenshot);
+                    this.updateScreenMetrics(analysis);
+                }
+            } catch (error) {
+                this.logActivity('Screen Analysis', `Error: ${error.message}`);
+            }
+        }, 5000); // Analyze every 5 seconds
+    }
+
+    async startFaceAnalysis() {
+        this.logActivity('Face Analysis', 'Starting biometric monitoring...');
+        document.getElementById('faceStatus').classList.remove('inactive');
+
+        this.intervals.faceAnalysis = setInterval(async () => {
+            if (!this.sessionActive || this.sessionPaused) return;
+
+            try {
+                const frame = await this.captureFaceFrame();
+                if (frame) {
+                    const analysis = await this.analyzeFace(frame);
+                    this.updateFaceMetrics(analysis);
+                }
+            } catch (error) {
+                this.logActivity('Face Analysis', `Error: ${error.message}`);
+            }
+        }, 3000); // Analyze every 3 seconds
+    }
+
+    async captureScreen() {
+        try {
+            // Use Screen Capture API
+            const stream = await navigator.mediaDevices.getDisplayMedia({
+                video: { mediaSource: 'screen' }
+            });
+            
+            const video = document.createElement('video');
+            video.srcObject = stream;
+            video.play();
+
+            // Wait for video to load
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Create canvas to capture frame
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
+
+            // Convert to base64
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+            
+            // Stop the stream
+            stream.getTracks().forEach(track => track.stop());
+            
+            return imageData.split(',')[1]; // Remove data URL prefix
+        } catch (error) {
+            // Fallback to dummy data for demo
+            this.logActivity('Screen Analysis', 'Using demo data (screen capture not available)');
+            return this.getDummyScreenData();
+        }
+    }
+
+    async captureFaceFrame() {
+        try {
+            // Use webcam for face capture
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { width: 640, height: 480 }
+            });
+            
+            const video = document.createElement('video');
+            video.srcObject = stream;
+            video.play();
+
+            // Wait for video to load
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Create canvas to capture frame
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
+
+            // Convert to base64
+            
+// Stop the stream
+stream.getTracks().forEach(track => track.stop());
+            
+return imageData.split(',')[1]; // Remove data URL prefix
+} catch (error) {
+// Fallback to dummy data for demo
+this.logActivity('Face Analysis', 'Using demo data (camera not available)');
+return this.getDummyFaceData();
+}
+}
+
+async analyzeScreen(screenshotData) {
+try {
+const response = await fetch(`${this.apiEndpoints.aiBackend}/analyze/screen`, {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+},
+body: JSON.stringify({
+user_id: this.sessionData.userId,
+session_id: this.sessionData.sessionId,
+screenshot_data: screenshotData
+})
+});
+
+if (!response.ok) {
+throw new Error(`HTTP error! status: ${response.status}`);
+}
+
+return await response.json();
+} catch (error) {
+return this.getDemoFaceAnalysis();
+}
+}
+
+async toggleVoiceAssistant() {
+const voiceBtn = document.getElementById('voiceBtn');
+const voiceIndicator = document.getElementById('voiceIndicator');
+        
+if (voiceBtn.textContent.includes('Start')) {
+// Start listening
+voiceBtn.textContent = '🛑 Stop Listening';
+voiceIndicator.classList.remove('hidden');
+document.getElementById('voiceStatus').classList.remove('inactive');
+            
+try {
+const response = await fetch(`${this.apiEndpoints.aiBackend}/intelligent-assistant/voice-command`, {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+},
+body: JSON.stringify({
+command: 'start voice assistant'
+})
+});
+            if (this.sessionActive) {
+                this.stopSession();
+            }
+        } else if (transcript.toLowerCase().includes('pause')) {
+            if (this.sessionActive && !this.sessionPaused) {
+                this.pauseSession();
+            }
+        } else if (transcript.toLowerCase().includes('resume')) {
+            if (this.sessionActive && this.sessionPaused) {
+                this.resumeSession();
+            }
+        }
+        
+        const responseTime = Date.now() - startTime;
+        document.getElementById('responseTime').textContent = responseTime;
+    }
+
+    updateScreenMetrics(analysis) {
+        document.getElementById('contentType').textContent = analysis.content_type || 'Unknown';
+        document.getElementById('distractionScore').textContent = Math.round(analysis.distraction_score || 0);
+        document.getElementById('textDensity').textContent = Math.round((analysis.text_density || 0) * 100);
+        document.getElementById('codeDetected').textContent = analysis.has_code ? 'Yes' : 'No';
+        
+        this.sessionData.screenAnalysis.push(analysis);
+        this.sessionData.metrics.totalEvents++;
+    }
+
+    updateFaceMetrics(analysis) {
+        document.getElementById('facePresent').textContent = analysis.face_present ? 'Yes' : 'No';
+        document.getElementById('gazeDirection').textContent = analysis.gaze_direction || 'Unknown';
+        document.getElementById('headTilt').textContent = Math.round(analysis.head_tilt || 0);
+        document.getElementById('blinkRate').textContent = (analysis.blink_rate || 0).toFixed(2);
+        document.getElementById('fatigueLevel').textContent = Math.round((analysis.fatigue_score || 0) * 100);
+        
+        this.sessionData.faceAnalysis.push(analysis);
+        this.sessionData.metrics.totalEvents++;
+    }
+
+    startMetricsUpdate() {
+        this.intervals.metricsUpdate = setInterval(() => {
+            if (!this.sessionActive || this.sessionPaused) return;
+            
+            this.calculateProductivityMetrics();
+            this.updateMetricsDisplay();
+        }, 2000); // Update every 2 seconds
+    }
+
+    calculateProductivityMetrics() {
+        const screenData = this.sessionData.screenAnalysis;
+        const faceData = this.sessionData.faceAnalysis;
+        
+        if (screenData.length === 0 && faceData.length === 0) return;
+        
+        // Calculate productivity score based on recent data
+        let productivity = 50; // Base score
+        
+        // Screen analysis contribution
+        if (screenData.length > 0) {
+            const recentScreen = screenData.slice(-5); // Last 5 analyses
+            const avgDistraction = recentScreen.reduce((sum, item) => sum + item.distraction_score, 0) / recentScreen.length;
+            const codeRatio = recentScreen.filter(item => item.has_code).length / recentScreen.length;
+            
+            productivity += (codeRatio * 30) - (avgDistraction * 0.3);
+        }
+        
+        // Face analysis contribution
+        if (faceData.length > 0) {
+            const recentFace = faceData.slice(-5); // Last 5 analyses
+            const avgFatigue = recentFace.reduce((sum, item) => sum + item.fatigue_score, 0) / recentFace.length;
+            const facePresentRatio = recentFace.filter(item => item.face_present).length / recentFace.length;
+            
+            productivity += (facePresentRatio * 20) - (avgFatigue * 20);
+        }
+        
+        this.sessionData.metrics.productivity = Math.max(0, Math.min(100, Math.round(productivity)));
+        this.sessionData.metrics.focus = Math.max(0, Math.min(100, Math.round(100 - (this.sessionData.metrics.fatigue || 0) * 100)));
+        this.sessionData.metrics.efficiency = this.sessionData.metrics.productivity; // Simplified
+    }
+
+    updateMetricsDisplay() {
+        document.getElementById('productivityScore').textContent = this.sessionData.metrics.productivity;
+        document.getElementById('focusLevel').textContent = this.sessionData.metrics.focus;
+        document.getElementById('totalEvents').textContent = this.sessionData.metrics.totalEvents;
+        document.getElementById('efficiency').textContent = this.sessionData.metrics.efficiency;
+        
+        // Update session duration
+        if (this.sessionStartTime) {
+            const duration = Date.now() - this.sessionStartTime;
+            const hours = Math.floor(duration / 3600000);
+            const minutes = Math.floor((duration % 3600000) / 60000);
+            const seconds = Math.floor((duration % 60000) / 1000);
+            
+            document.getElementById('sessionDuration').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Update focus time (simplified)
+            this.sessionData.metrics.focusTime = Math.floor(duration / 60000);
+            document.getElementById('focusTime').textContent = this.sessionData.metrics.focusTime;
+        }
+    }
+
+    updateSessionUI() {
+        const startBtn = document.getElementById('startSession');
+        const stopBtn = document.getElementById('stopSession');
+        const pauseBtn = document.getElementById('pauseSession');
+        const resumeBtn = document.getElementById('resumeSession');
+        const sessionStatus = document.getElementById('sessionStatus');
+
+        if (this.sessionActive) {
+            startBtn.classList.add('hidden');
+            stopBtn.classList.remove('hidden');
+            sessionStatus.textContent = 'Session Active';
+            sessionStatus.className = 'session-status session-active';
+            
+            if (this.sessionPaused) {
+                pauseBtn.classList.add('hidden');
+                resumeBtn.classList.remove('hidden');
+                sessionStatus.textContent = 'Session Paused';
+                sessionStatus.className = 'session-status session-inactive';
+            } else {
+                pauseBtn.classList.remove('hidden');
+                resumeBtn.classList.add('hidden');
+            }
+        } else {
+            startBtn.classList.remove('hidden');
+            stopBtn.classList.add('hidden');
+            pauseBtn.classList.add('hidden');
+            resumeBtn.classList.add('hidden');
+            sessionStatus.textContent = 'Session Inactive';
+            sessionStatus.className = 'session-status session-inactive';
+        }
+    }
+
+    updateUI() {
+        document.getElementById('userId').textContent = `User: ${this.sessionData.userId}`;
+    }
+
+    logActivity(source, message) {
+        const activityLog = document.getElementById('activityLog');
+        const timestamp = new Date().toLocaleTimeString();
+        
+        const logEntry = document.createElement('div');
+        logEntry.className = 'log-entry';
+        logEntry.innerHTML = `
+            <div class="log-time">${timestamp} - ${source}</div>
+            <div class="log-message">${message}</div>
+        `;
+        
+        activityLog.insertBefore(logEntry, activityLog.firstChild);
+        
+        // Keep only last 50 entries
+        while (activityLog.children.length > 50) {
+            activityLog.removeChild(activityLog.lastChild);
+        }
+    }
+
+    showSessionSummary() {
+        const duration = Date.now() - this.sessionStartTime;
+        const minutes = Math.floor(duration / 60000);
+        
+        this.logActivity('Summary', `Session completed. Duration: ${minutes}min, Productivity: ${this.sessionData.metrics.productivity}%, Events: ${this.sessionData.metrics.totalEvents}`);
+    }
+
+    // Demo data methods
+    getDummyScreenData() {
+        // Return a small base64 encoded image (1x1 pixel)
+        return 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+    }
+
+    getDummyFaceData() {
+        // Return a small base64 encoded image (1x1 pixel)
+        return 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+    }
+
+    handleTabChange(tabData) {
+        this.logActivity('Tab Change', `Switched to: ${tabData.domain}`);
+        
+        // Update screen analysis with current tab
+        this.currentTabData = tabData;
+        this.updateScreenMetrics({
+            content_type: tabData.category,
+            distraction_score: tabData.distractionLevel,
+            text_density: 0.7, // Simulated
+            has_code: tabData.category === 'productive',
+            has_social_indicator: tabData.category === 'distraction'
+        });
+    }
+
+    handleSiteBlocked(siteData) {
+        this.logActivity('Site Blocked', `Blocked: ${siteData.domain}`);
+        
+        // Update metrics
+        this.sessionData.metrics.totalEvents++;
+        this.updateMetricsDisplay();
+    }
+
+    handleExtensionSessionStart(data) {
+        this.logActivity('Extension Session', `Started: ${data.sessionId}`);
+        
+        // Update UI
+        this.updateSessionUI();
+    }
+
+    handleExtensionSessionStop(data) {
+        this.logActivity('Extension Session', `Stopped: ${data.sessionId}`);
+        
+        // Update UI
+        this.updateSessionUI();
+    }
+
+    handleExtensionMessage(message, sender, sendResponse) {
+        switch (message.type) {
+            case 'tab_change':
+                this.handleTabChange(message.data);
+                break;
+            case 'site_blocked':
+                this.handleSiteBlocked(message.data);
+                break;
+            case 'session_started':
+                this.handleExtensionSessionStart(message.data);
+                break;
+            case 'session_stopped':
+                this.handleExtensionSessionStop(message.data);
+                break;
+        }
+    }
+
+    getDemoFaceAnalysis() {
+        const gazeDirections = ['left', 'right', 'center'];
+        return {
+            face_present: Math.random() > 0.2,
+            gaze_direction: gazeDirections[Math.floor(Math.random() * gazeDirections.length)],
+            head_tilt: (Math.random() - 0.5) * 20,
+            blink_rate: Math.random() * 0.5,
+            fatigue_score: Math.random() * 0.7
+        };
+    }
+}
+
+// Initialize dashboard when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new AIDashboard();
+});
