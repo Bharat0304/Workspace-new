@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "mkdir -p public && find frontend -type f -exec cp {} public/ \\;",
-  "outputDirectory": "public",
   "builds": [
     {
-      "src": "public/**/*",
+      "src": "frontend/**/*",
       "use": "@vercel/static"
     }
   ],
