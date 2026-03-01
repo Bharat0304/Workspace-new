@@ -1,0 +1,8 @@
+
+
+> @repo/ui@0.0.0 build:styles /Users/user/bharat/workspace/packages/ui
+> tailwindcss -i ./src/styles.css -o ./dist/index.css
+
+[3m[1m[34m≈[39m[22m[23m tailwindcss [34mv4.1.16[39m
+
+Done in [34m52ms[39m
