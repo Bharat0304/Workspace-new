@@ -34,9 +34,12 @@ class Settings(BaseSettings):
     frontend_vercel_url: Optional[str] = None
     allowed_origins: List[str] = [
         "https://workspace-frontend-liard.vercel.app",
+        "https://workspace-new-qlxm.onrender.com",
+        "https://backend-workspace-vccb.onrender.com",
         "http://localhost:3000",
         "http://localhost:5000",
         "http://localhost:5001",
+        "http://localhost:8000",
     ]
     
     # Educational Content

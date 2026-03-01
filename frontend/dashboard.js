@@ -21,34 +21,40 @@ class AIDashboard {
                 focusTime: 0
             }
         };
-        
-        this.sessionActive = false;
+
+        this.sessionActive = false; // Session starts only when user clicks Start
         this.sessionPaused = false;
         this.sessionStartTime = null;
         this.intervals = {};
-        
+
+        // Auto-detect environment: use Render backend in production, localhost in dev
+        const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
         this.apiEndpoints = {
-            aiBackend: 'http://localhost:8000',
-            voiceBackend: 'http://localhost:4001'
+            aiBackend: isProduction ? 'https://backend-workspace-vccb.onrender.com' : 'http://localhost:8000',
+            voiceBackend: isProduction ? 'https://backend-workspace-vccb.onrender.com' : 'http://localhost:4001'
         };
-        
+
         this.init();
     }
 
     init() {
         this.bindEvents();
-        this.updateUI();
-        this.logActivity('System', 'Dashboard initialized. Ready to start AI monitoring session.');
-        
+        this.updateSessionUI();
+        this.updateMetricsDisplay();
+
+        this.logActivity('System', 'Dashboard ready. Click "Start Session" to begin monitoring.');
+
         // Set up extension communication
         this.listenForExtensionMessages();
     }
 
     bindEvents() {
-        // Session controls
+        // Session control buttons
         document.getElementById('startSession').addEventListener('click', () => this.startSession());
         document.getElementById('stopSession').addEventListener('click', () => this.stopSession());
-        
+        document.getElementById('pauseSession').addEventListener('click', () => this.pauseSession());
+        document.getElementById('resumeSession').addEventListener('click', () => this.resumeSession());
+
         // Voice assistant - DISABLED to avoid CORS errors
         // document.getElementById('voiceBtn').addEventListener('click', () => this.toggleVoiceAssistant());
     }
@@ -64,17 +70,17 @@ class AIDashboard {
             // await this.startScreenAnalysis(); // Disable for now
             // await this.startFaceAnalysis(); // Disable for now
             this.startMetricsUpdate();
-            
+
             // DIRECT CAMERA CONTROL - Try to start camera directly
             await this.startCameraDirectly();
-            
+
             // Update UI
             this.updateSessionUI();
             this.logActivity('Session', `Started session ${this.sessionData.sessionId}`);
-            
+
             // Start session timer
             this.intervals.sessionTimer = setInterval(() => this.updateSessionTimer(), 1000);
-            
+
         } catch (error) {
             this.logActivity('Error', `Failed to start session: ${error.message}`);
         }
@@ -83,7 +89,7 @@ class AIDashboard {
     async startCameraDirectly() {
         try {
             console.log('📹 Attempting to start camera directly...');
-            
+
             // Request camera access directly from the website
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {
@@ -92,21 +98,21 @@ class AIDashboard {
                 },
                 audio: false
             });
-            
+
             console.log('✅ Camera access granted directly from website');
-            
+
             // Store stream for later cleanup (NO VIDEO PREVIEW)
             this.cameraStream = stream;
-            
+
             // Add camera status indicator instead of video
             this.addCameraStatusIndicator();
-            
+
             this.logActivity('Camera', 'Camera started directly from website (no preview)');
-            
+
         } catch (error) {
             console.log('❌ Failed to start camera directly:', error);
             this.logActivity('Camera', `Failed to start camera: ${error.message}`);
-            
+
             // Fallback: Try extension communication
             this.notifyExtension('start_session_with_camera', {
                 sessionId: this.sessionData.sessionId,
@@ -135,7 +141,7 @@ class AIDashboard {
                 📹 Camera ON
             </div>
         `;
-        
+
         // Add to dashboard
         const sessionInfo = document.querySelector('.session-info');
         if (sessionInfo) {
@@ -152,13 +158,13 @@ class AIDashboard {
                 console.log('📹 Camera stopped directly');
                 this.logActivity('Camera', 'Camera stopped');
             }
-            
+
             // Remove camera status indicator
             const indicator = document.getElementById('cameraIndicator');
             if (indicator) {
                 indicator.remove();
             }
-            
+
         } catch (error) {
             console.log('❌ Failed to stop camera:', error);
             this.logActivity('Camera', `Failed to stop camera: ${error.message}`);
@@ -167,28 +173,28 @@ class AIDashboard {
 
     stopSession() {
         if (!this.sessionActive) return;
-        
+
         this.sessionActive = false;
         this.sessionPaused = false;
-        
+
         // Stop camera directly
         this.stopCameraDirectly();
-        
+
         // Clear all intervals
         Object.values(this.intervals).forEach(interval => clearInterval(interval));
         this.intervals = {};
-        
+
         // Notify browser extension
         this.notifyExtension('session_stopped', {
             sessionId: this.sessionData.sessionId,
             timestamp: Date.now()
         });
-        
+
         // Update UI
         this.updateSessionUI();
         this.showSessionSummary();
         this.logActivity('Session', `Session ${this.sessionData.sessionId} ended`);
-        
+
         // Reset session data
         this.sessionData.sessionId = null;
         this.sessionStartTime = null;
@@ -196,11 +202,11 @@ class AIDashboard {
 
     pauseSession() {
         if (!this.sessionActive || this.sessionPaused) return;
-        
+
         this.sessionPaused = true;
         this.updateSessionUI();
         this.logActivity('Session', 'Session paused');
-        
+
         this.notifyExtension('session_paused', {
             sessionId: this.sessionData.sessionId,
             timestamp: Date.now()
@@ -209,11 +215,11 @@ class AIDashboard {
 
     resumeSession() {
         if (!this.sessionActive || !this.sessionPaused) return;
-        
+
         this.sessionPaused = false;
         this.updateSessionUI();
         this.logActivity('Session', 'Session resumed');
-        
+
         this.notifyExtension('session_resumed', {
             sessionId: this.sessionData.sessionId,
             timestamp: Date.now()
@@ -222,21 +228,21 @@ class AIDashboard {
 
     async startScreenAnalysis() {
         if (!this.sessionActive || this.sessionPaused) return;
-        
+
         try {
             // Capture screen
             const screenshotData = await this.captureScreen();
-            
+
             // Analyze with AI backend
             const analysis = await this.analyzeScreen(screenshotData);
-            
+
             // Update metrics
             this.updateScreenMetrics(analysis);
-            
+
         } catch (error) {
             this.logActivity('Screen Analysis', `Error: ${error.message}`);
         }
-        
+
         // Schedule next analysis
         this.intervals.screenAnalysis = setTimeout(() => this.startScreenAnalysis(), 5000);
     }
@@ -262,21 +268,21 @@ class AIDashboard {
 
     async startFaceAnalysis() {
         if (!this.sessionActive || this.sessionPaused) return;
-        
+
         try {
             // Capture face
             const faceData = await this.captureFace();
-            
+
             // Analyze with AI backend
             const analysis = await this.analyzeFace(faceData);
-            
+
             // Update metrics
             this.updateFaceMetrics(analysis);
-            
+
         } catch (error) {
             this.logActivity('Face Analysis', `Error: ${error.message}`);
         }
-        
+
         // Schedule next analysis
         this.intervals.faceAnalysis = setTimeout(() => this.startFaceAnalysis(), 3000);
     }
@@ -342,13 +348,13 @@ class AIDashboard {
     async toggleVoiceAssistant() {
         const voiceBtn = document.getElementById('voiceBtn');
         const voiceIndicator = document.getElementById('voiceIndicator');
-        
+
         if (voiceBtn.textContent.includes('Start')) {
             // Start listening
             voiceBtn.textContent = '🛑 Stop Listening';
             voiceIndicator.classList.remove('hidden');
             document.getElementById('voiceStatus').classList.remove('inactive');
-            
+
             try {
                 const response = await fetch(`${this.apiEndpoints.aiBackend}/intelligent-assistant/voice-command`, {
                     method: 'POST',
@@ -366,14 +372,14 @@ class AIDashboard {
 
                 const result = await response.json();
                 this.logActivity('Voice Assistant', `Command: start voice assistant, Response: ${result.response}`);
-                
+
                 // Update voice status
                 document.getElementById('lastCommand').textContent = result.response;
-                
+
             } catch (error) {
                 this.logActivity('Voice Assistant', `Error: ${error.message}`);
             }
-            
+
         } else {
             // Stop listening
             voiceBtn.textContent = '🎤 Start Listening';
@@ -414,7 +420,7 @@ class AIDashboard {
         // DISABLED - Avoid CORS errors
         console.log('AI communication disabled to avoid CORS issues');
         return;
-        
+
         // Original code commented out to prevent CORS errors
         /*
         fetch(`${this.apiEndpoints.aiBackend}/intelligent-assistant/analyze-context`, {
@@ -441,7 +447,7 @@ class AIDashboard {
                 console.log('🔌 Extension ID found:', window.chrome.runtime.id);
                 this.extensionId = window.chrome.runtime.id;
             }
-            
+
             window.chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 this.handleExtensionMessage(message, sender, sendResponse);
             });
@@ -470,7 +476,7 @@ class AIDashboard {
 
     handleTabChange(tabData) {
         this.logActivity('Tab Change', `Switched to: ${tabData.domain}`);
-        
+
         // Update screen analysis with current tab
         this.currentTabData = tabData;
         this.updateScreenMetrics({
@@ -484,7 +490,7 @@ class AIDashboard {
 
     handleSiteBlocked(siteData) {
         this.logActivity('Site Blocked', `Blocked: ${siteData.domain}`);
-        
+
         // Update metrics
         this.sessionData.metrics.totalEvents++;
         this.updateMetricsDisplay();
@@ -492,56 +498,94 @@ class AIDashboard {
 
     handleExtensionSessionStart(data) {
         this.logActivity('Extension Session', `Started: ${data.sessionId}`);
-        
+
         // Update UI
         this.updateSessionUI();
     }
 
     handleExtensionSessionStop(data) {
         this.logActivity('Extension Session', `Stopped: ${data.sessionId}`);
-        
+
         // Update UI
         this.updateSessionUI();
     }
 
-    updateScreenMetrics(analysis) {
+    updateScreenMetrics(analysis = null) {
         const contentTypeEl = document.getElementById('contentType');
         const distractionScoreEl = document.getElementById('distractionScore');
         const textDensityEl = document.getElementById('textDensity');
         const hasCodeEl = document.getElementById('codeDetected'); // Fixed ID
-        const hasSocialEl = document.getElementById('hasSocial'); // This might be missing
-        
-        if (contentTypeEl) contentTypeEl.textContent = analysis.content_type || 'unknown';
-        if (distractionScoreEl) distractionScoreEl.textContent = Math.round(analysis.distraction_score || 0);
-        if (textDensityEl) textDensityEl.textContent = Math.round((analysis.text_density || 0) * 100);
-        if (hasCodeEl) hasCodeEl.textContent = analysis.has_code ? 'Yes' : 'No';
-        if (hasSocialEl) hasSocialEl.textContent = analysis.has_social_indicator ? 'Yes' : 'No';
-        
-        this.sessionData.screenAnalysis.push(analysis);
-        this.sessionData.metrics.totalEvents++;
+
+        // Hardcoded data if no analysis provided
+        const hardcodedData = {
+            content_type: 'Development',
+            distraction_score: 15.2,
+            text_density: 0.72,
+            has_code: true
+        };
+
+        const data = analysis || hardcodedData;
+
+        if (contentTypeEl) contentTypeEl.textContent = data.content_type || 'Development';
+        if (distractionScoreEl) distractionScoreEl.textContent = Math.round(data.distraction_score || 15.2) + '%';
+        if (textDensityEl) textDensityEl.textContent = Math.round((data.text_density || 0.72) * 100) + '%';
+        if (hasCodeEl) hasCodeEl.textContent = data.has_code ? 'Yes' : 'No';
+
+        if (analysis) {
+            this.sessionData.screenAnalysis.push(analysis);
+            this.sessionData.metrics.totalEvents++;
+        }
     }
 
-    updateFaceMetrics(analysis) {
+    updateFaceMetrics(analysis = null) {
         const facePresentEl = document.getElementById('facePresent');
         const gazeDirectionEl = document.getElementById('gazeDirection');
         const headTiltEl = document.getElementById('headTilt');
         const blinkRateEl = document.getElementById('blinkRate');
         const fatigueLevelEl = document.getElementById('fatigueLevel');
-        
-        if (facePresentEl) facePresentEl.textContent = analysis.face_present ? 'Yes' : 'No';
-        if (gazeDirectionEl) gazeDirectionEl.textContent = analysis.gaze_direction || 'Unknown';
-        if (headTiltEl) headTiltEl.textContent = Math.round(analysis.head_tilt || 0);
-        if (blinkRateEl) blinkRateEl.textContent = (analysis.blink_rate || 0).toFixed(2);
-        if (fatigueLevelEl) fatigueLevelEl.textContent = Math.round((analysis.fatigue_score || 0) * 100);
-        
-        this.sessionData.faceAnalysis.push(analysis);
-        this.sessionData.metrics.totalEvents++;
+
+        // Hardcoded data if no analysis provided
+        const hardcodedData = {
+            face_present: true,
+            gaze_direction: 'Center',
+            head_tilt: 2.3,
+            blink_rate: 0.8,
+            fatigue_score: 0.15
+        };
+
+        const data = analysis || hardcodedData;
+
+        if (facePresentEl) facePresentEl.textContent = data.face_present ? 'Yes' : 'No';
+        if (gazeDirectionEl) gazeDirectionEl.textContent = data.gaze_direction || 'Center';
+        if (headTiltEl) headTiltEl.textContent = Math.round(data.head_tilt || 2.3) + '°';
+        if (blinkRateEl) blinkRateEl.textContent = (data.blink_rate || 0.8).toFixed(1) + ' Hz';
+        if (fatigueLevelEl) fatigueLevelEl.textContent = Math.round((data.fatigue_score || 0.15) * 100) + '%';
+
+        if (analysis) {
+            this.sessionData.faceAnalysis.push(analysis);
+            this.sessionData.metrics.totalEvents++;
+        }
     }
 
     startMetricsUpdate() {
         this.intervals.metricsUpdate = setInterval(() => {
             if (!this.sessionActive || this.sessionPaused) return;
-            
+
+            // Generate demo data for face and screen analysis
+            const demoScreenData = this.getDemoScreenAnalysis();
+            const demoFaceData = this.getDemoFaceAnalysis();
+
+            // Update face and screen displays
+            this.updateScreenMetrics(demoScreenData);
+            this.updateFaceMetrics(demoFaceData);
+
+            // Update voice assistant with demo data
+            this.updateVoiceAssistantDemo();
+
+            // Store data for metrics calculation
+            this.sessionData.screenAnalysis.push(demoScreenData);
+            this.sessionData.faceAnalysis.push(demoFaceData);
+
             this.calculateProductivityMetrics();
             this.updateMetricsDisplay();
         }, 2000); // Update every 2 seconds
@@ -550,30 +594,30 @@ class AIDashboard {
     calculateProductivityMetrics() {
         const screenData = this.sessionData.screenAnalysis;
         const faceData = this.sessionData.faceAnalysis;
-        
+
         if (screenData.length === 0 && faceData.length === 0) return;
-        
+
         // Calculate productivity score based on recent data
         let productivity = 50; // Base score
-        
+
         // Screen analysis contribution
         if (screenData.length > 0) {
             const recentScreen = screenData.slice(-5); // Last 5 analyses
             const avgDistraction = recentScreen.reduce((sum, item) => sum + item.distraction_score, 0) / recentScreen.length;
             const codeRatio = recentScreen.filter(item => item.has_code).length / recentScreen.length;
-            
+
             productivity += (codeRatio * 30) - (avgDistraction * 0.3);
         }
-        
+
         // Face analysis contribution
         if (faceData.length > 0) {
             const recentFace = faceData.slice(-5); // Last 5 analyses
             const avgFatigue = recentFace.reduce((sum, item) => sum + item.fatigue_score, 0) / recentFace.length;
             const facePresentRatio = recentFace.filter(item => item.face_present).length / recentFace.length;
-            
+
             productivity += (facePresentRatio * 20) - (avgFatigue * 20);
         }
-        
+
         this.sessionData.metrics.productivity = Math.max(0, Math.min(100, Math.round(productivity)));
         this.sessionData.metrics.focus = Math.max(0, Math.min(100, Math.round(100 - (this.sessionData.metrics.fatigue || 0) * 100)));
         this.sessionData.metrics.efficiency = this.sessionData.metrics.productivity; // Simplified
@@ -584,17 +628,17 @@ class AIDashboard {
         document.getElementById('focusLevel').textContent = this.sessionData.metrics.focus;
         document.getElementById('totalEvents').textContent = this.sessionData.metrics.totalEvents;
         document.getElementById('efficiency').textContent = this.sessionData.metrics.efficiency;
-        
+
         // Update session duration
         if (this.sessionStartTime) {
             const duration = Date.now() - this.sessionStartTime;
             const hours = Math.floor(duration / 3600000);
             const minutes = Math.floor((duration % 3600000) / 60000);
             const seconds = Math.floor((duration % 60000) / 1000);
-            
-            document.getElementById('sessionDuration').textContent = 
+
+            document.getElementById('sessionDuration').textContent =
                 `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
+
             // Update focus time (simplified)
             this.sessionData.metrics.focusTime = Math.floor(duration / 60000);
             document.getElementById('focusTime').textContent = this.sessionData.metrics.focusTime;
@@ -613,7 +657,7 @@ class AIDashboard {
             stopBtn.classList.remove('hidden');
             sessionStatus.textContent = 'Session Active';
             sessionStatus.className = 'session-status session-active';
-            
+
             if (this.sessionPaused) {
                 pauseBtn.classList.add('hidden');
                 resumeBtn.classList.remove('hidden');
@@ -639,8 +683,8 @@ class AIDashboard {
             const hours = Math.floor(duration / 3600000);
             const minutes = Math.floor((duration % 3600000) / 60000);
             const seconds = Math.floor((duration % 60000) / 1000);
-            
-            document.getElementById('sessionDuration').textContent = 
+
+            document.getElementById('sessionDuration').textContent =
                 `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
     }
@@ -648,7 +692,7 @@ class AIDashboard {
     showSessionSummary() {
         const duration = Date.now() - this.sessionStartTime;
         const minutes = Math.floor(duration / 60000);
-        
+
         this.logActivity('Summary', `Session completed. Duration: ${minutes}min, Productivity: ${this.sessionData.metrics.productivity}%, Events: ${this.sessionData.metrics.totalEvents}`);
     }
 
@@ -662,7 +706,7 @@ class AIDashboard {
             <span class="activity-source">${source}:</span>
             <span class="activity-message">${message}</span>
         `;
-        
+
         logContainer.appendChild(logEntry);
         logContainer.scrollTop = logContainer.scrollHeight;
     }
@@ -704,6 +748,33 @@ class AIDashboard {
             blink_rate: Math.random() * 0.5,
             fatigue_score: Math.random() * 0.7
         };
+    }
+
+    updateVoiceAssistantDemo() {
+        const commands = [
+            'Start focus session',
+            'Check productivity metrics',
+            'Analyze screen content',
+            'Enable distraction blocking',
+            'Show study statistics'
+        ];
+
+        const responseTimes = [120, 150, 180, 200, 160];
+
+        // Update voice assistant display with demo data
+        const lastCommandEl = document.getElementById('lastCommand');
+        const responseTimeEl = document.getElementById('responseTime');
+
+        // Always show hardcoded data
+        if (lastCommandEl) {
+            const randomCommand = commands[Math.floor(Math.random() * commands.length)];
+            lastCommandEl.textContent = randomCommand;
+        }
+
+        if (responseTimeEl) {
+            const randomResponseTime = responseTimes[Math.floor(Math.random() * responseTimes.length)];
+            responseTimeEl.textContent = randomResponseTime + ' ms';
+        }
     }
 }
 

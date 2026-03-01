@@ -5,7 +5,7 @@
   "description": "Monitors tab content and blocks distracting sites during focus sessions",
   "permissions": [
     "tabs",
-    "activeTab", 
+    "activeTab",
     "storage",
     "alarms",
     "notifications",
@@ -17,6 +17,7 @@
   "host_permissions": [
     "http://localhost:8000/*",
     "https://localhost:8000/*",
+    "https://backend-workspace-vccb.onrender.com/*",
     "https://www.youtube.com/*",
     "https://youtube.com/*",
     "https://www.instagram.com/*",
@@ -31,7 +32,7 @@
   },
   "icons": {
     "16": "icons/icon16.png",
-    "48": "icons/icon48.png", 
+    "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   }
 }

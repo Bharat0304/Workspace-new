@@ -354,10 +354,13 @@ async def analyze_tab(request: dict):
         
         is_distracting = any(keyword in title_lower for keyword in distraction_keywords)
         
-        # YouTube handling
+        # YouTube handling — "guilty until proven educational"
         is_youtube = "youtube.com" in url_lower or "youtu.be" in url_lower
-        is_youtube_educational = is_youtube and is_educational
+        is_youtube_educational = is_youtube and is_educational and not is_distracting
         is_youtube_distracting = is_youtube and is_distracting
+        
+        logger.info(f"📊 Tab analysis: url={url_lower[:80]}, title={title_lower[:80]}")
+        logger.info(f"📊 Flags: youtube={is_youtube}, edu={is_educational}, distract={is_distracting}")
         
         if is_youtube_educational:
             content_type = "educational"
@@ -365,13 +368,14 @@ async def analyze_tab(request: dict):
             recommended_action = "none"
         elif is_youtube_distracting:
             content_type = "high_distraction"
-            distraction_score = 85.0
+            distraction_score = 90.0
             recommended_action = "close_tab"
         elif is_distraction_site:
             content_type = "high_distraction"
             distraction_score = 90.0
             recommended_action = "close_tab"
         elif is_youtube:
+            # Default: unknown YouTube content = distracting
             content_type = "high_distraction"
             distraction_score = 85.0
             recommended_action = "close_tab"
@@ -379,6 +383,8 @@ async def analyze_tab(request: dict):
             content_type = "neutral"
             distraction_score = 40.0
             recommended_action = "show_banner"
+        
+        logger.info(f"📊 Result: type={content_type}, score={distraction_score}, action={recommended_action}")
         
         result = {
             "content_type": content_type,

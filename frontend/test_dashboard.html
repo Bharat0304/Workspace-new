@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,20 +11,23 @@
             margin: 20px;
             background: #f8fafc;
         }
+
         .test-container {
             max-width: 800px;
             margin: 0 auto;
             background: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .test-section {
             margin-bottom: 30px;
             padding: 20px;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
         }
+
         .test-button {
             background: #6366f1;
             color: white;
@@ -34,18 +38,33 @@
             font-size: 16px;
             margin: 5px;
         }
+
         .test-button:hover {
             background: #4f46e5;
         }
+
         .status {
             padding: 10px;
             margin: 10px 0;
             border-radius: 6px;
             font-weight: 600;
         }
-        .success { background: #dcfce7; color: #166534; }
-        .error { background: #fef2f2; color: #dc2626; }
-        .info { background: #eff6ff; color: #2563eb; }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .info {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
         #testResults {
             white-space: pre-wrap;
             font-family: monospace;
@@ -56,38 +75,39 @@
         }
     </style>
 </head>
+
 <body>
     <div class="test-container">
         <h1>🧪 WorkSpace AI Dashboard Test</h1>
         <p>This page tests the dashboard functionality and helps troubleshoot session startup issues.</p>
-        
+
         <div class="test-section">
             <h2>🔧 System Check</h2>
             <button class="test-button" onclick="checkSystem()">Check System Status</button>
             <div id="systemStatus"></div>
         </div>
-        
+
         <div class="test-section">
             <h2>🌐 API Connectivity</h2>
             <button class="test-button" onclick="testAIBackend()">Test AI Backend</button>
             <button class="test-button" onclick="testIntelligentAssistant()">Test AI Assistant</button>
             <div id="apiStatus"></div>
         </div>
-        
+
         <div class="test-section">
             <h2>🎯 Session Test</h2>
             <button class="test-button" onclick="testSessionStart()">Test Session Start</button>
             <button class="test-button" onclick="testSessionStop()">Test Session Stop</button>
             <div id="sessionStatus"></div>
         </div>
-        
+
         <div class="test-section">
             <h2>📊 Dashboard Test</h2>
             <button class="test-button" onclick="openDashboard()">Open Main Dashboard</button>
             <button class="test-button" onclick="testDashboardJS()">Test Dashboard JavaScript</button>
             <div id="dashboardStatus"></div>
         </div>
-        
+
         <div class="test-section">
             <h2>📝 Test Results</h2>
             <div id="testResults"></div>
@@ -95,27 +115,29 @@
     </div>
 
     <script>
+        const _isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+        const BACKEND_URL = _isProduction ? 'https://backend-workspace-vccb.onrender.com' : 'http://localhost:8005';
         let testResults = [];
-        
+
         function log(message, type = 'info') {
             const timestamp = new Date().toLocaleTimeString();
             testResults.push(`[${timestamp}] ${type.toUpperCase()}: ${message}`);
             updateTestResults();
         }
-        
+
         function updateTestResults() {
             document.getElementById('testResults').textContent = testResults.join('\n');
         }
-        
+
         function showStatus(elementId, message, type) {
             const element = document.getElementById(elementId);
             element.innerHTML = `<div class="status ${type}">${message}</div>`;
         }
-        
+
         async function checkSystem() {
             log('Starting system check...');
             showStatus('systemStatus', 'Checking system...', 'info');
-            
+
             try {
                 // Check if dashboard.js loads
                 const response = await fetch('./dashboard.js');
@@ -125,34 +147,34 @@
                 } else {
                     throw new Error('dashboard.js not accessible');
                 }
-                
+
                 // Check browser compatibility
                 if (typeof fetch !== 'undefined') {
                     log('✅ Fetch API available');
                 } else {
                     log('❌ Fetch API not available');
                 }
-                
+
                 if (typeof localStorage !== 'undefined') {
                     log('✅ LocalStorage available');
                 } else {
                     log('❌ LocalStorage not available');
                 }
-                
+
                 showStatus('systemStatus', '✅ System check completed', 'success');
-                
+
             } catch (error) {
                 log(`❌ System check failed: ${error.message}`);
                 showStatus('systemStatus', `❌ System check failed: ${error.message}`, 'error');
             }
         }
-        
+
         async function testAIBackend() {
             log('Testing AI Backend connectivity...');
             showStatus('apiStatus', 'Testing AI Backend...', 'info');
-            
+
             try {
-                const response = await fetch('http://localhost:8005/health');
+                const response = await fetch(`${BACKEND_URL}/health`);
                 if (response.ok) {
                     const data = await response.json();
                     log('✅ AI Backend is running');
@@ -166,13 +188,13 @@
                 showStatus('apiStatus', `❌ AI Backend not accessible: ${error.message}`, 'error');
             }
         }
-        
+
         async function testIntelligentAssistant() {
             log('Testing Intelligent Assistant...');
             showStatus('apiStatus', 'Testing AI Assistant...', 'info');
-            
+
             try {
-                const response = await fetch('http://localhost:8005/intelligent-assistant/voice-command', {
+                const response = await fetch(`${BACKEND_URL}/intelligent-assistant/voice-command`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -182,7 +204,7 @@
                         user_context: { focus_level: 75 }
                     })
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     log('✅ Intelligent Assistant working');
@@ -196,11 +218,11 @@
                 showStatus('apiStatus', `❌ AI Assistant not working: ${error.message}`, 'error');
             }
         }
-        
+
         function testSessionStart() {
             log('Testing session start functionality...');
             showStatus('sessionStatus', 'Testing session start...', 'info');
-            
+
             try {
                 // Create a simple test session
                 const testSession = {
@@ -208,82 +230,83 @@
                     startTime: Date.now(),
                     active: true
                 };
-                
+
                 log(`✅ Test session created: ${testSession.sessionId}`);
                 showStatus('sessionStatus', `✅ Test session created: ${testSession.sessionId}`, 'success');
-                
+
                 // Test session data structure
                 if (testSession.sessionId && testSession.startTime) {
                     log('✅ Session data structure valid');
                 } else {
                     throw new Error('Invalid session data structure');
                 }
-                
+
             } catch (error) {
                 log(`❌ Session start test failed: ${error.message}`);
                 showStatus('sessionStatus', `❌ Session start test failed: ${error.message}`, 'error');
             }
         }
-        
+
         function testSessionStop() {
             log('Testing session stop functionality...');
             showStatus('sessionStatus', 'Testing session stop...', 'info');
-            
+
             try {
                 // Simulate stopping a session
                 const sessionId = 'test_' + Date.now();
                 log(`✅ Session stop simulated for: ${sessionId}`);
                 showStatus('sessionStatus', '✅ Session stop test passed', 'success');
-                
+
             } catch (error) {
                 log(`❌ Session stop test failed: ${error.message}`);
                 showStatus('sessionStatus', `❌ Session stop test failed: ${error.message}`, 'error');
             }
         }
-        
+
         function openDashboard() {
             log('Opening main dashboard...');
             showStatus('dashboardStatus', 'Opening dashboard...', 'info');
-            
+
             window.open('./dashboard.html', '_blank');
             log('✅ Dashboard opened in new tab');
             showStatus('dashboardStatus', '✅ Dashboard opened', 'success');
         }
-        
+
         function testDashboardJS() {
             log('Testing dashboard JavaScript...');
             showStatus('dashboardStatus', 'Testing dashboard JS...', 'info');
-            
+
             try {
                 // Test if we can create an AIDashboard instance
                 const testDashboard = new AIDashboard();
                 log('✅ AIDashboard class instantiated');
-                
+
                 // Test basic methods
                 if (typeof testDashboard.startSession === 'function') {
                     log('✅ startSession method available');
                 }
-                
+
                 if (typeof testDashboard.stopSession === 'function') {
                     log('✅ stopSession method available');
                 }
-                
+
                 showStatus('dashboardStatus', '✅ Dashboard JavaScript working', 'success');
-                
+
             } catch (error) {
                 log(`❌ Dashboard JS test failed: ${error.message}`);
                 showStatus('dashboardStatus', `❌ Dashboard JS error: ${error.message}`, 'error');
             }
         }
-        
+
         // Auto-run system check on page load
         window.addEventListener('load', () => {
             log('Test page loaded successfully');
             updateTestResults();
         });
     </script>
-    
+
     <!-- Load the dashboard JavaScript for testing -->
     <script src="./dashboard.js"></script>
 </body>
+
 </html>

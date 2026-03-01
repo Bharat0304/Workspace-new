@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -170,8 +171,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
         }
 
         .metrics-grid {
@@ -280,16 +288,18 @@
         }
     </style>
 </head>
+
 <body>
     <div class="dashboard-container">
         <!-- Dashboard Header -->
         <header class="dashboard-header">
             <div class="header-content">
                 <div class="logo">
-                    WORK<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M9 21h6M12 3a6 6 0 0 0-4 10.5V17h8v-3.5A6 6 0 0 0 12 3z"/>
-                        <line x1="10" y1="17" x2="10" y2="21"/>
-                        <line x1="14" y1="17" x2="14" y2="21"/>
+                    WORK<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M9 21h6M12 3a6 6 0 0 0-4 10.5V17h8v-3.5A6 6 0 0 0 12 3z" />
+                        <line x1="10" y1="17" x2="10" y2="21" />
+                        <line x1="14" y1="17" x2="14" y2="21" />
                     </svg>SPACE AI
                 </div>
                 <div class="session-info">
@@ -491,4 +501,5 @@
 
     <script src="dashboard.js"></script>
 </body>
+
 </html>
