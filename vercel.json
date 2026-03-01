@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "mkdir -p public && rsync -av frontend/ public/",
+  "buildCommand": "mkdir -p public && find frontend -type f -exec cp {} public/ \\;",
   "outputDirectory": "public",
   "builds": [
     {
