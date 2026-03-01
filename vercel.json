@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "mkdir -p public && cp -r frontend/* public/",
+  "buildCommand": "mkdir -p public && rsync -av frontend/ public/",
   "outputDirectory": "public",
   "builds": [
     {
