@@ -1,8 +1,10 @@
 {
   "version": 2,
+  "buildCommand": "cp -r frontend public",
+  "outputDirectory": "public",
   "builds": [
     {
-      "src": "frontend/**/*",
+      "src": "public/**/*",
       "use": "@vercel/static"
     }
   ],
