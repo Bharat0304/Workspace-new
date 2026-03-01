@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "buildCommand": "echo 'No build needed - files are in frontend directory'",
+  "outputDirectory": "frontend",
+  "builds": [
+    {
+      "src": "frontend/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}
