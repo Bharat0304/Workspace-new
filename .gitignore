@@ -34,3 +34,11 @@ yarn-error.log*
 
 # ui
 dist/
+
+# markdown docs (keep README)
+*.md
+!README.md
+
+# python cache
+__pycache__/
+*.pyc
