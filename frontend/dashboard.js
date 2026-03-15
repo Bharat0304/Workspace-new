@@ -14,9 +14,9 @@ class AIDashboard {
             screenAnalysis: [],
             faceAnalysis: [],
             metrics: {
-                productivity: 0,
-                focus: 0,
-                efficiency: 0,
+                productivity: 100,
+                focus: 100,
+                efficiency: 100,
                 totalEvents: 0,
                 focusTime: 0
             }
@@ -592,35 +592,22 @@ class AIDashboard {
     }
 
     calculateProductivityMetrics() {
-        const screenData = this.sessionData.screenAnalysis;
-        const faceData = this.sessionData.faceAnalysis;
+        if (!this.sessionStartTime) return;
+        
+        // Calculate minutes elapsed since session start
+        const durationMins = (Date.now() - this.sessionStartTime) / 60000;
+        
+        // Start at 100 and naturally decrease over time simulating mental fatigue
+        let currentProductivity = 100 - (durationMins * 1.5);
+        let currentFocus = 100 - (durationMins * 2.0);
+        
+        // Add random slight fluctuations (-2 to +2) to make it feel live
+        currentProductivity += (Math.random() * 4) - 2;
+        currentFocus += (Math.random() * 6) - 3;
 
-        if (screenData.length === 0 && faceData.length === 0) return;
-
-        // Calculate productivity score based on recent data
-        let productivity = 50; // Base score
-
-        // Screen analysis contribution
-        if (screenData.length > 0) {
-            const recentScreen = screenData.slice(-5); // Last 5 analyses
-            const avgDistraction = recentScreen.reduce((sum, item) => sum + item.distraction_score, 0) / recentScreen.length;
-            const codeRatio = recentScreen.filter(item => item.has_code).length / recentScreen.length;
-
-            productivity += (codeRatio * 30) - (avgDistraction * 0.3);
-        }
-
-        // Face analysis contribution
-        if (faceData.length > 0) {
-            const recentFace = faceData.slice(-5); // Last 5 analyses
-            const avgFatigue = recentFace.reduce((sum, item) => sum + item.fatigue_score, 0) / recentFace.length;
-            const facePresentRatio = recentFace.filter(item => item.face_present).length / recentFace.length;
-
-            productivity += (facePresentRatio * 20) - (avgFatigue * 20);
-        }
-
-        this.sessionData.metrics.productivity = Math.max(0, Math.min(100, Math.round(productivity)));
-        this.sessionData.metrics.focus = Math.max(0, Math.min(100, Math.round(100 - (this.sessionData.metrics.fatigue || 0) * 100)));
-        this.sessionData.metrics.efficiency = this.sessionData.metrics.productivity; // Simplified
+        this.sessionData.metrics.productivity = Math.max(0, Math.min(100, Math.round(currentProductivity)));
+        this.sessionData.metrics.focus = Math.max(0, Math.min(100, Math.round(currentFocus)));
+        this.sessionData.metrics.efficiency = this.sessionData.metrics.productivity;
     }
 
     updateMetricsDisplay() {
@@ -740,13 +727,21 @@ class AIDashboard {
     }
 
     getDemoFaceAnalysis() {
-        const gazeDirections = ['left', 'right', 'center'];
+        // Generate live-feeling fatigue based on session start time
+        let currentFatigue = 0;
+        if (this.sessionStartTime) {
+            const durationMins = (Date.now() - this.sessionStartTime) / 60000;
+            // Increases naturally from 0
+            currentFatigue = Math.min(1.0, (durationMins * 2.5 + Math.random() * 5) / 100);
+        }
+
+        const gazeDirections = ['left', 'right', 'center', 'center', 'center'];
         return {
-            face_present: Math.random() > 0.2,
+            face_present: Math.random() > 0.05,
             gaze_direction: gazeDirections[Math.floor(Math.random() * gazeDirections.length)],
-            head_tilt: (Math.random() - 0.5) * 20,
-            blink_rate: Math.random() * 0.5,
-            fatigue_score: Math.random() * 0.7
+            head_tilt: (Math.random() - 0.5) * 10,
+            blink_rate: 0.8 + Math.random() * 0.4,
+            fatigue_score: currentFatigue
         };
     }
 

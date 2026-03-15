@@ -253,12 +253,12 @@ body {
     font-family: 'Outfit', sans-serif;
     font-weight: 900;
     font-size: clamp(5rem, 13vw, 15rem);
-    color: rgba(0, 0, 0, 0);
+    color: rgba(255, 255, 255, 0.4);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     user-select: none;
     text-shadow: none;
-    animation: none;
+    animation: bgTextBreathe 6s ease-in-out infinite;
     transform: translateY(-15%);
 }
 
