@@ -249,46 +249,85 @@ async def analyze_tab(request: dict):
             "study", "studying", "academic", "university", "college", "professor",
             "instructor", "teacher", "explained", "explanation", "guide", "how to",
             "introduction", "basics", "fundamentals", "concepts", "understanding",
+            "masterclass", "training", "seminar", "webinar", "revision", "syllabus",
+            "roadmap", "prep", "preparation", "summary", "analysis", "crash course",
+            "bootcamp", "certification", "degree", "diploma", "syllabus", "notes",
+            "worksheet", "assignment", "homework", "exam prep", "test prep", "flashcards",
             
             # Math terms
             "math", "mathematics", "calculus", "algebra", "geometry", "trigonometry",
             "derivative", "integral", "limit", "function", "equation", "theorem",
             "proof", "linear algebra", "vector", "matrix", "statistics", "probability",
             "euler", "pi", "golden ratio", "fibonacci", "prime", "fractal",
+            "differential equations", "discrete math", "topology", "number theory",
+            "set theory", "combinatorics", "graph theory", "complex analysis", "real analysis",
+            "arithmetic", "fractions", "decimals", "percentages", "ratios",
             
             # Science terms
             "physics", "chemistry", "biology", "quantum", "mechanic", "thermodynamics",
             "electromagnetism", "neuroscience", "genetics", "astronomy", "cosmology",
-            "organic chemistry", "inorganic chemistry", "biochemistry",
+            "organic chemistry", "inorganic chemistry", "biochemistry", "ecology",
+            "microbiology", "anatomy", "physiology", "geology", "earth science",
+            "meteorology", "oceanography", "paleontology", "zoology", "botany",
+            "astrophysics", "particle physics", "relativity", "kinematics", "dynamics",
+            
+            # History and Humanities
+            "history", "geography", "political science", "civics", "economics",
+            "sociology", "psychology", "anthropology", "philosophy", "literature",
+            "world history", "ancient history", "modern history", "civilization",
+            "renaissance", "industrial revolution", "world war", "cold war",
+            
+            # Languages and Arts
+            "english grammar", "vocabulary", "linguistics", "language learning",
+            "spanish", "french", "german", "mandarin", "japanese", "korean", "hindi",
+            "music theory", "art history", "design principles", "color theory",
             
             # Computer science / programming
             "programming", "coding", "computer science", "algorithm", "data structure",
             "python", "javascript", "machine learning", "neural network", "ai",
             "artificial intelligence", "software engineering", "binary", "algorithmic",
+            "react", "node", "typescript", "c++", "java", "golang", "rust", "linux",
+            "docker", "kubernetes", "database", "sql", "nosql", "system design",
+            "html", "css", "web development", "mobile development", "app development",
+            "cybersecurity", "ethical hacking", "cryptography", "blockchain", "cloud computing",
+            "aws", "azure", "gcp", "devops", "git", "github", "api", "rest", "graphql",
             
-            # Educational channel names
+            # Educational channel names (Global)
             "3blue1brown", "3 blue 1 brown", "khan academy", "khanacademy",
             "crash course", "crashcourse", "veritasium", "numberphile", "minutephysics",
             "ted-ed", "ted ed", "smarter every day", "scishow", "sixty symbols",
             "periodic videos", "vsauce", "minuteearth", "kurzgesagt", "cody's lab",
-            "mark rober", "steve mould", "tom scott", "computerphile",
+            "mark rober", "steve mould", "tom scott", "computerphile", "freecodecamp",
+            "fireship", "traversy media", "programming with mosh", "the organic chemistry tutor",
+            "lex fridman", "hosh", "mit opencourseware", "standford online", "harvard course",
+            "yale courses", "coursera", "edx", "udacity", "udemy", "pluralsight", "codecademy",
+            "bro code", "kevin stratvert", "networkchuck", "david bombal", "andrew ng",
             
-            # Indian education (JEE/NEET)
+            # Indian education (JEE/NEET/UPSC)
             "unacademy", "byju's", "vedantu", "toppr", "kayson education",
             "physics wallah", "chemistry wallah", "biology wallah", "math wallah",
             "jee", "neet", "iit jee", "aiims", "medical entrance", "engineering entrance",
             "jee main", "jee advanced", "neet pg", "neet ug", "iit", "aiims",
             "cbse", "ncert", "state board", "icse", "isc", "igcse", "ib",
+            "apni kaksha", "aman dhattarwal", "code with harry", "gate", "upsc",
+            "ssc", "banking exams", "nda", "cat exam", "clat", "cuet",
+            "magnet brains", "study iq", "drishti ias", "vision ias", "let's tute",
             
             # Indian educational topics
             "electrostatics", "magnetism", "optics", "modern physics", "mechanics",
             "organic chemistry", "physical chemistry", "inorganic chemistry",
             "botany", "zoology", "human physiology", "genetics and evolution",
             "coordinate geometry", "trigonometry", "calculus", "algebra", "statistics",
+            "kinematics", "thermodynamics", "polymers", "biomolecules", "environmental issues",
+            "p block", "s block", "d block", "f block elements", "haloalkanes", "haloarenes",
             
             # Educational phrases
             "what is", "why does", "how does", "explained simply", "visualized",
-            "the math of", "the physics of", "proof", "intuition", "behind the scenes"
+            "the math of", "the physics of", "proof", "intuition", "behind the scenes",
+            "deep dive", "everything you need to know", "in 10 minutes", "full course",
+            "for beginners", "step by step", "from scratch", "crash course",
+            "part 1", "part 2", "chapter 1", "chapter 2", "lesson 1", "lesson 2",
+            "complete guide", "ultimate guide", "mastering", "learn to code"
         ]
         is_educational = any(keyword in title_lower for keyword in educational_keywords)
         
@@ -301,55 +340,88 @@ async def analyze_tab(request: dict):
             # General entertainment
             "funny", "meme", "memes", "prank", "pranks", "challenge", "challenges",
             "vlog", "vlogs", "reaction", "reactions", "drama", "celebrity",
-            "news", "trending", "viral", "gossip", "entertainment",
+            "news", "trending", "viral", "gossip", "entertainment", "hilarious",
+            "try not to laugh", "cringe", "epic", "mind blowing", "caught on camera",
+            "humor", "joke", "jokes", "comedy sketch", "laugh", "laughing", "weird",
+            "crazy", "insane", "unbelievable", "shocking", "exposed", "canceled",
             
             # Music and dance
             "music video", "dance", "song", "album", "track", "remix",
             "concert", "performance", "cover song", "dance challenge",
-            "tiktok dance", "reels", "shorts",
+            "tiktok dance", "reels", "shorts", "lyric video", "karaoke", "rap battle",
+            "pop", "hip hop", "beats", "lofi", "dj", "edm", "kpop", "bts", "blackpink",
+            "taylor swift", "drake", "weekend", "ariana grande", "justin bieber",
+            "billie eilish", "trap", "party mix", "chill mix", "bass boosted",
             
             # Gaming
             "gaming", "gameplay", "lets play", "playthrough", "walkthrough",
-            "esports", "tournament", "stream", "live stream", "gamer",
+            "esports", "tournament", "stream", "live stream", "gamer", "fortnite",
+            "minecraft", "gta", "valorant", "roblox", "call of duty", "pubg", "bgmi",
+            "speedrun", "mods", "rage quit", "highlights", "montage", "gacha",
+            "apex legends", "league of legends", "csgo", "counter strike", "smash bros",
+            "nintendo", "playstation", "xbox", "twitch", "discord", "free fire", "among us",
+            "funny moments gaming", "glitch", "hacks", "cheats", "let's play",
             
             # Comedy and parody
             "comedy", "parody", "roast", "roasts", "stand up", "funny moments",
             "fail", "fails", "epic fail", "try not to laugh", "funny videos",
+            "skit", "sketch", "bloopers", "satire", "spoof", "outtakes",
             
-            # Indian content creators
+            # Content creators (Global & Indian)
             "bb ki vines", "carryminati", "bhuvan bam", "ashish chanchlani",
             "mumbiker nikhil", "triggered insaan", "round2hell",
             "sourav joshi", "nisha guragain", "mr. beast", "jake paul",
-            "logan paul", "david dobrik", "emma chamberlain",
+            "logan paul", "david dobrik", "emma chamberlain", "pewdiepie",
+            "ishowspeed", "kai cenat", "xqc", "sidemen", "ksi", "elvish yadav",
+            "thugesh", "fukra insaan", "technical guruji", "flying beast",
+            "harsh", "beniwal", "harsh beniwal", "amit bhadana", "zakir khan", "munawar faruqui",
+            "samay raina", "tanmay bhat", "bassi", "andrew tate", "trisha paytas",
+            "dream", "tommyinnit", "markiplier", "jacksepticeye", "smosh",
             
             # Indian entertainment
             "bollywood", "movie clip", "movie scene", "trailer", "teaser",
             "behind the scenes", "making of", "interview", "celebrity interview",
-            "talk show", "reality show", "web series", "tv show",
+            "talk show", "reality show", "web series", "tv show", "kapil sharma",
+            "bigg boss", "splitsvilla", "roadies", "tollywood", "kollywood",
+            "koffee with karan", "taarak mehta", "tmkoc", "cid", "indian idol",
+            "shark tank india", "hustle", "mtv", "amazon prime video", "netflix india",
             
             # Social media trends
             "instagram reels", "tiktok trends", "youtube shorts", "viral video",
             "trending dance", "challenge video", "lip sync", "transition",
+            "pov", "storytime", "aesthetic", "grwm", "day in my life",
+            "photo dump", "outfit check", "vibes", "glow up",
             
             # Sports entertainment
             "cricket highlights", "football highlights", "sports fails",
             "athlete moments", "best plays", "top 10", "compilation",
+            "wwe", "ufc", "boxing", "ipl", "fifa", "nba", "messi", "ronaldo",
+            "kohli", "dhoni", "rohit sharma", "sachin", "world cup", "olympics",
+            "wrestlemania", "smackdown", "raw", "premier league", "champions league",
             
             # Lifestyle and fashion
             "haul", "lookbook", "fashion", "beauty", "makeup tutorial",
-            "lifestyle vlog", "daily routine", "grwm", "get ready with me",
+            "lifestyle vlog", "daily routine", "get ready with me",
+            "room tour", "house tour", "shopping", "outfit of the day", "ootd",
+            "skincare routine", "hair tutorial", "nails", "sneakerhead", "streetwear",
             
             # Food entertainment
             "food porn", "mukbang", "eating show", "cooking show",
             "recipe", "food challenge", "taste test", "street food",
+            "eating 10000 calories", "spicy challenge", "asmr eating",
+            "food review", "gordon ramsay", "masterchef", "baking fail",
             
             # Tech entertainment (non-educational)
             "unboxing", "tech review", "phone review", "gadget review",
-            "drop test", "destruction", "tech entertainment",
+            "drop test", "destruction", "tech entertainment", "iphone vs",
+            "samsung vs", "is it worth it", "dont buy this", "buying the most expensive",
             
             # General non-educational
             "top 10", "top 5", "best of", "worst of", "compilation",
-            "montage", "super cut", "edit", "funny edit", "meme compilation"
+            "montage", "super cut", "edit", "funny edit", "meme compilation",
+            "satisfying", "asmr", "conspiracy", "scary", "ghost hunt",
+            "mrbeast", "mr beast", "tier list", "ranking", "i bought", "i spent",
+            "i survived", "hide and seek", "100 days", "in real life", "irl"
         ]
         
         is_distracting = any(keyword in title_lower for keyword in distraction_keywords)
