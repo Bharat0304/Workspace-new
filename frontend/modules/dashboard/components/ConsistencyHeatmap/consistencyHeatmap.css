@@ -1,0 +1,167 @@
+/* ============================================================
+   CONSISTENCY HEATMAP — Component Stylesheet
+   Follows the WorkSpace dark/clean/compact theme conventions.
+   ============================================================ */
+
+.ch-container {
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.ch-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin: 0;
+}
+
+.ch-grid-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: flex-start;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.ch-svg {
+    display: block;
+    overflow: visible;
+    user-select: none;
+}
+
+/* Heatmap cell levels mapping to HSL tailored study intensities */
+.ch-cell {
+    transition: opacity 0.1s ease;
+    cursor: pointer;
+}
+
+.ch-cell.ch-level-0 { fill: rgba(255, 255, 255, 0.03); }
+.ch-cell.ch-level-1 { fill: rgba(34, 197, 94, 0.15); } /* Light Green */
+.ch-cell.ch-level-2 { fill: rgba(34, 197, 94, 0.40); } /* Mid Green */
+.ch-cell.ch-level-3 { fill: rgba(34, 197, 94, 0.70); } /* Bright Green */
+.ch-cell.ch-level-4 { fill: rgba(34, 197, 94, 0.95); } /* Brightest Green */
+
+.ch-cell-empty {
+    pointer-events: none;
+}
+
+.ch-cell:hover:not(.ch-cell-empty) {
+    opacity: 0.7;
+}
+
+/* SVG text elements */
+.ch-label-week {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    fill: rgba(255, 255, 255, 0.25);
+    text-anchor: end;
+    dominant-baseline: middle;
+}
+
+.ch-label-month {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    fill: rgba(255, 255, 255, 0.3);
+    text-anchor: start;
+    dominant-baseline: auto;
+}
+
+/* Bottom Legend */
+.ch-legend {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 0.2rem;
+}
+
+.ch-legend-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+}
+
+.ch-legend-cell {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 1.5px;
+}
+
+.ch-legend-cell.ch-level-0 { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.02); }
+.ch-legend-cell.ch-level-1 { background: rgba(34, 197, 94, 0.15); }
+.ch-legend-cell.ch-level-2 { background: rgba(34, 197, 94, 0.40); }
+.ch-legend-cell.ch-level-3 { background: rgba(34, 197, 94, 0.70); }
+.ch-legend-cell.ch-level-4 { background: rgba(34, 197, 94, 0.95); }
+
+/* Absolute Tooltip Card */
+.ch-tooltip {
+    position: absolute;
+    z-index: 10000;
+    background: #0d1117;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    padding: 8px 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.12s ease, transform 0.12s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 110px;
+}
+
+.ch-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ch-tooltip-date {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+}
+
+.ch-tooltip-status {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    color: var(--white);
+    font-weight: 500;
+}
+
+.ch-tooltip-status.font-dim {
+    color: var(--text-muted);
+}
+
+.ch-tooltip-hours {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.ch-tooltip-badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    color: var(--amber);
+    margin-top: 2px;
+    font-weight: 500;
+}
+
+.ch-loading {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    padding: 2rem;
+    text-align: center;
+}

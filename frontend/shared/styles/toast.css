@@ -1,0 +1,110 @@
+/* ============================================================
+   WORKSPACE — Toast Notification Styles
+   Reusable toast component used across all WorkSpace modules.
+   Link this stylesheet on any page that uses Toast.js.
+   ============================================================ */
+
+/* ── Container ────────────────────────────────────────────── */
+
+#wsToastContainer {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    pointer-events: none;
+    max-width: 360px;
+    width: 100%;
+}
+
+/* ── Individual Toast ─────────────────────────────────────── */
+
+.ws-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: #111;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+    pointer-events: all;
+    cursor: default;
+
+    /* Animation: start below and invisible */
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+    transition:
+        opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ws-toast--visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.ws-toast--leaving {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+    pointer-events: none;
+}
+
+/* ── Icon ─────────────────────────────────────────────────── */
+
+.ws-toast-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-top: 1px;
+}
+
+.ws-toast--success .ws-toast-icon { color: var(--green); }
+.ws-toast--error   .ws-toast-icon { color: var(--red);   }
+.ws-toast--warn    .ws-toast-icon { color: var(--yellow); }
+.ws-toast--info    .ws-toast-icon { color: var(--text-muted); }
+
+/* ── Left accent border by type ───────────────────────────── */
+
+.ws-toast--success { border-left: 3px solid var(--green);  }
+.ws-toast--error   { border-left: 3px solid var(--red);    }
+.ws-toast--warn    { border-left: 3px solid var(--yellow); }
+.ws-toast--info    { border-left: 3px solid rgba(255,255,255,0.2); }
+
+/* ── Message ──────────────────────────────────────────────── */
+
+.ws-toast-message {
+    flex: 1;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.4;
+    padding-top: 1px;
+}
+
+/* ── Close Button ─────────────────────────────────────────── */
+
+.ws-toast-close {
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    border-radius: 3px;
+    margin-top: 1px;
+    transition: color 0.15s ease;
+}
+
+.ws-toast-close:hover {
+    color: rgba(255, 255, 255, 0.75);
+}

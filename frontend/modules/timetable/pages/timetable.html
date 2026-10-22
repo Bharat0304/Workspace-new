@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WorkSpace Timetable — Structured cognitive planning, study schedules, and baseline session configurations.">
+    <title>WorkSpace — Study Timetable</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Outfit:wght@400;700;800;900&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../shared/styles/variables.css">
+    <link rel="stylesheet" href="../../../shared/styles/reset.css">
+    <link rel="stylesheet" href="../../../shared/styles/toast.css">
+    <link rel="stylesheet" href="../../../shared/components/navbar.css">
+    <link rel="stylesheet" href="../styles/timetable.css">
+</head>
+<body>
+
+    <!-- ========== APP SHELL NAVBAR ========== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="../../../index.html" class="nav-logo">
+                WORK<svg class="logo-bulb" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21h6M12 3a6 6 0 0 0-4 10.5V17h8v-3.5A6 6 0 0 0 12 3z"/><line x1="10" y1="17" x2="10" y2="21"/><line x1="14" y1="17" x2="14" y2="21"/></svg>SPACE
+            </a>
+            <!-- App module navigation — no marketing links inside the app -->
+            <div class="nav-links" id="navLinks">
+                <a href="../../dashboard/pages/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="#" class="nav-link active">Study Sheet</a>
+            </div>
+            <div class="nav-actions">
+                <a href="#" class="btn-ghost" id="navLogoutBtn">Log Out</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile overlay -->
+    <div class="mobile-overlay" id="mobileOverlay">
+        <a href="../../dashboard/pages/dashboard.html" class="mobile-link">Dashboard</a>
+        <a href="#" class="mobile-link active">Study Sheet</a>
+        <a href="#" class="btn-amber mobile-cta" id="mobileLogoutBtn">Log Out</a>
+    </div>
+
+    <!-- ========== TIMETABLE MAIN CONTAINER ========== -->
+    <main class="timetable-container" id="timetableMain">
+        <!-- Rendered dynamically via index.js -->
+    </main>
+
+    <script type="module" src="../index.js"></script>
+</body>
+</html>

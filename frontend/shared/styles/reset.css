@@ -1,0 +1,98 @@
+/* ============================================
+   WORKSPACE GLOBAL RESET
+   ============================================ */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+    background: var(--black);
+    font-family: 'DM Sans', 'Outfit', sans-serif;
+    color: var(--white);
+    cursor: default;
+    line-height: 1.5;
+}
+
+/* Common button utilities */
+.btn-amber {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--white);
+    background: var(--black);
+    border: 1px solid var(--amber);
+    padding: 0.55rem 1.3rem;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-amber:hover {
+    background: var(--amber);
+    color: var(--black);
+    box-shadow: 0 0 20px rgba(217,119,6,0.2);
+}
+
+.btn-lg {
+    padding: 0.75rem 1.8rem;
+    font-size: 0.95rem;
+}
+
+.btn-xl {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+}
+
+.btn-ghost {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.btn-ghost:hover {
+    color: var(--white);
+}
+
+.btn-ghost-outline {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--white);
+    background: transparent;
+    border: 1px solid var(--white-20);
+    padding: 0.75rem 1.8rem;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-ghost-outline:hover {
+    border-color: var(--white-55);
+    background: rgba(255,255,255,0.04);
+}
+
+/* Scroll reveal common styles */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}

@@ -1,0 +1,55 @@
+{
+  "name": "backend2-electron-integration",
+  "version": "1.0.0",
+  "description": "Backend2 AI Assistant + Electron Integration for Your Project",
+  "main": "electron_integration_main.js",
+  "scripts": {
+    "start": "electron electron_integration_main.js",
+    "dev": "NODE_ENV=development electron electron_integration_main.js",
+    "build": "electron-builder",
+    "build-win": "electron-builder --win",
+    "build-mac": "electron-builder --mac",
+    "build-linux": "electron-builder --linux",
+    "test-ai": "python test_ai_assistant.py",
+    "start-servers": "concurrently \"python ai_assistant_server.py\" \"cd backend && npm run dev\""
+  },
+  "keywords": ["ai", "assistant", "backend2", "electron", "voice", "visual", "productivity"],
+  "author": "Backend2 AI Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^40.6.1",
+    "electron-builder": "^24.6.4",
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "axios": "^1.13.6",
+    "form-data": "^4.0.5"
+  },
+  "build": {
+    "appId": "com.backend2.aiassistant",
+    "productName": "Backend2 AI Assistant",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron_integration_main.js",
+      "electron_integration_preload.js",
+      "ai_assistant_server.py",
+      "face_landmarker.task",
+      "calibration.json",
+      "requirements.txt",
+      "backend/**/*",
+      "frontend/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}

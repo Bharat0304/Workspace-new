@@ -1,0 +1,26 @@
+/* ============================================
+   WORKSPACE DESIGN SYSTEM — Core Variables
+   ============================================ */
+
+:root {
+    --black: #000000;
+    --surface: #0A0A0A;
+    --surface-mid: #111111;
+    --border: #1C1C1C;
+    --amber: #D97706;
+    --amber-dim: rgba(217, 119, 6, 0.15);
+    --white: #FFFFFF;
+    --white-55: rgba(255,255,255,0.55);
+    --white-40: rgba(255,255,255,0.4);
+    --white-20: rgba(255,255,255,0.2);
+    --white-06: rgba(255,255,255,0.06);
+    --text-muted: rgba(255,255,255,0.5);
+    --text-body: rgba(255,255,255,0.6);
+    --text-dim: rgba(255,255,255,0.35);
+    --green: #22C55E;
+    --green-dim: rgba(34, 197, 94, 0.15);
+    --yellow: #FACC15;
+    --yellow-dim: rgba(250, 204, 21, 0.15);
+    --red: #EF4444;
+    --red-dim: rgba(239, 68, 68, 0.15);
+}

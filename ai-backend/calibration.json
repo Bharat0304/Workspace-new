@@ -1,0 +1,497 @@
+{
+  "fatigue": {
+    "sample_count": 5,
+    "avg": {
+      "ear": 1.5006,
+      "nose_pos": 0.6136,
+      "roll": 25.8858,
+      "mouth_ratio": 0.2987,
+      "lip_stretch": 0.084,
+      "mouth_open": 0.0185,
+      "brow_raise": 0.0828,
+      "brow_furrow": 0.0274
+    },
+    "range": {
+      "ear": {
+        "min": 1.272,
+        "max": 1.8819
+      },
+      "nose_pos": {
+        "min": 0.4257,
+        "max": 0.7422
+      },
+      "roll": {
+        "min": 8.7594,
+        "max": 38.9062
+      },
+      "mouth_ratio": {
+        "min": 0.0,
+        "max": 1.456
+      },
+      "lip_stretch": {
+        "min": 0.0633,
+        "max": 0.0978
+      },
+      "mouth_open": {
+        "min": -0.0014,
+        "max": 0.0921
+      },
+      "brow_raise": {
+        "min": 0.0597,
+        "max": 0.0934
+      },
+      "brow_furrow": {
+        "min": 0.0095,
+        "max": 0.0426
+      }
+    },
+    "all_samples": [
+      {
+        "ear": 1.272,
+        "nose_pos": 0.6441,
+        "roll": 8.7594,
+        "mouth_ratio": 0.0173,
+        "lip_stretch": 0.0978,
+        "mouth_open": 0.00169,
+        "brow_raise": 0.0934,
+        "brow_furrow": 0.0095
+      },
+      {
+        "ear": 1.8819,
+        "nose_pos": 0.7422,
+        "roll": 32.4369,
+        "mouth_ratio": 0.0182,
+        "lip_stretch": 0.0775,
+        "mouth_open": -0.00141,
+        "brow_raise": 0.0878,
+        "brow_furrow": 0.0366
+      },
+      {
+        "ear": 1.4631,
+        "nose_pos": 0.6253,
+        "roll": 38.9062,
+        "mouth_ratio": 0.0018,
+        "lip_stretch": 0.0887,
+        "mouth_open": 0.00016,
+        "brow_raise": 0.0869,
+        "brow_furrow": 0.0426
+      },
+      {
+        "ear": 1.4252,
+        "nose_pos": 0.6305,
+        "roll": 31.0815,
+        "mouth_ratio": 0.0,
+        "lip_stretch": 0.0929,
+        "mouth_open": -0.0,
+        "brow_raise": 0.086,
+        "brow_furrow": 0.0364
+      },
+      {
+        "ear": 1.461,
+        "nose_pos": 0.4257,
+        "roll": 18.2448,
+        "mouth_ratio": 1.456,
+        "lip_stretch": 0.0633,
+        "mouth_open": 0.09215,
+        "brow_raise": 0.0597,
+        "brow_furrow": 0.0118
+      }
+    ]
+  },
+  "focus": {
+    "sample_count": 5,
+    "avg": {
+      "ear": 1.2612,
+      "nose_pos": 0.6397,
+      "roll": 10.7969,
+      "mouth_ratio": 0.0234,
+      "lip_stretch": 0.0758,
+      "mouth_open": 0.0015,
+      "brow_raise": 0.0788,
+      "brow_furrow": 0.0088
+    },
+    "range": {
+      "ear": {
+        "min": 1.1036,
+        "max": 1.4616
+      },
+      "nose_pos": {
+        "min": 0.6023,
+        "max": 0.6822
+      },
+      "roll": {
+        "min": 0.3267,
+        "max": 39.335
+      },
+      "mouth_ratio": {
+        "min": 0.0097,
+        "max": 0.0574
+      },
+      "lip_stretch": {
+        "min": 0.0512,
+        "max": 0.0917
+      },
+      "mouth_open": {
+        "min": 0.0009,
+        "max": 0.0029
+      },
+      "brow_raise": {
+        "min": 0.0564,
+        "max": 0.0919
+      },
+      "brow_furrow": {
+        "min": 0.0008,
+        "max": 0.0318
+      }
+    },
+    "all_samples": [
+      {
+        "ear": 1.1352,
+        "nose_pos": 0.6283,
+        "roll": 2.4706,
+        "mouth_ratio": 0.019,
+        "lip_stretch": 0.0917,
+        "mouth_open": 0.00174,
+        "brow_raise": 0.0908,
+        "brow_furrow": 0.0014
+      },
+      {
+        "ear": 1.1036,
+        "nose_pos": 0.6822,
+        "roll": 0.3267,
+        "mouth_ratio": 0.0097,
+        "lip_stretch": 0.0895,
+        "mouth_open": 0.00087,
+        "brow_raise": 0.091,
+        "brow_furrow": 0.0008
+      },
+      {
+        "ear": 1.2756,
+        "nose_pos": 0.663,
+        "roll": 0.995,
+        "mouth_ratio": 0.0131,
+        "lip_stretch": 0.09,
+        "mouth_open": 0.00118,
+        "brow_raise": 0.0919,
+        "brow_furrow": 0.002
+      },
+      {
+        "ear": 1.4616,
+        "nose_pos": 0.6225,
+        "roll": 10.857,
+        "mouth_ratio": 0.0574,
+        "lip_stretch": 0.0512,
+        "mouth_open": 0.00294,
+        "brow_raise": 0.0641,
+        "brow_furrow": 0.0078
+      },
+      {
+        "ear": 1.3298,
+        "nose_pos": 0.6023,
+        "roll": 39.335,
+        "mouth_ratio": 0.018,
+        "lip_stretch": 0.0566,
+        "mouth_open": 0.00102,
+        "brow_raise": 0.0564,
+        "brow_furrow": 0.0318
+      }
+    ]
+  },
+  "happy": {
+    "sample_count": 5,
+    "avg": {
+      "ear": 1.3355,
+      "nose_pos": 0.5918,
+      "roll": 13.9181,
+      "mouth_ratio": 0.2425,
+      "lip_stretch": 0.1127,
+      "mouth_open": 0.0276,
+      "brow_raise": 0.0801,
+      "brow_furrow": 0.0132
+    },
+    "range": {
+      "ear": {
+        "min": 1.3159,
+        "max": 1.3673
+      },
+      "nose_pos": {
+        "min": 0.5665,
+        "max": 0.6101
+      },
+      "roll": {
+        "min": 1.5662,
+        "max": 39.5145
+      },
+      "mouth_ratio": {
+        "min": 0.1472,
+        "max": 0.3519
+      },
+      "lip_stretch": {
+        "min": 0.1056,
+        "max": 0.1202
+      },
+      "mouth_open": {
+        "min": 0.016,
+        "max": 0.0423
+      },
+      "brow_raise": {
+        "min": 0.0773,
+        "max": 0.084
+      },
+      "brow_furrow": {
+        "min": 0.0011,
+        "max": 0.0383
+      }
+    },
+    "all_samples": [
+      {
+        "ear": 1.3172,
+        "nose_pos": 0.5913,
+        "roll": 4.4661,
+        "mouth_ratio": 0.2319,
+        "lip_stretch": 0.1136,
+        "mouth_open": 0.02635,
+        "brow_raise": 0.0809,
+        "brow_furrow": 0.0043
+      },
+      {
+        "ear": 1.3159,
+        "nose_pos": 0.5928,
+        "roll": 1.5662,
+        "mouth_ratio": 0.2264,
+        "lip_stretch": 0.1155,
+        "mouth_open": 0.02615,
+        "brow_raise": 0.0811,
+        "brow_furrow": 0.0011
+      },
+      {
+        "ear": 1.3308,
+        "nose_pos": 0.5983,
+        "roll": 19.4345,
+        "mouth_ratio": 0.1472,
+        "lip_stretch": 0.1088,
+        "mouth_open": 0.01602,
+        "brow_raise": 0.0774,
+        "brow_furrow": 0.0175
+      },
+      {
+        "ear": 1.3673,
+        "nose_pos": 0.6101,
+        "roll": 39.5145,
+        "mouth_ratio": 0.2553,
+        "lip_stretch": 0.1056,
+        "mouth_open": 0.02695,
+        "brow_raise": 0.0773,
+        "brow_furrow": 0.0383
+      },
+      {
+        "ear": 1.3462,
+        "nose_pos": 0.5665,
+        "roll": 4.6091,
+        "mouth_ratio": 0.3519,
+        "lip_stretch": 0.1202,
+        "mouth_open": 0.04231,
+        "brow_raise": 0.084,
+        "brow_furrow": 0.0046
+      }
+    ]
+  },
+  "sad": {
+    "sample_count": 5,
+    "avg": {
+      "ear": 1.451,
+      "nose_pos": 0.646,
+      "roll": 21.0773,
+      "mouth_ratio": 0.0261,
+      "lip_stretch": 0.0734,
+      "mouth_open": 0.0005,
+      "brow_raise": 0.0722,
+      "brow_furrow": 0.0181
+    },
+    "range": {
+      "ear": {
+        "min": 1.2841,
+        "max": 1.6435
+      },
+      "nose_pos": {
+        "min": 0.6133,
+        "max": 0.7154
+      },
+      "roll": {
+        "min": 6.2276,
+        "max": 47.0766
+      },
+      "mouth_ratio": {
+        "min": 0.0093,
+        "max": 0.0665
+      },
+      "lip_stretch": {
+        "min": 0.0539,
+        "max": 0.0959
+      },
+      "mouth_open": {
+        "min": -0.0013,
+        "max": 0.0036
+      },
+      "brow_raise": {
+        "min": 0.0518,
+        "max": 0.0875
+      },
+      "brow_furrow": {
+        "min": 0.0056,
+        "max": 0.0351
+      }
+    },
+    "all_samples": [
+      {
+        "ear": 1.2841,
+        "nose_pos": 0.6409,
+        "roll": 6.2276,
+        "mouth_ratio": 0.0106,
+        "lip_stretch": 0.0854,
+        "mouth_open": -0.00091,
+        "brow_raise": 0.0815,
+        "brow_furrow": 0.0056
+      },
+      {
+        "ear": 1.4158,
+        "nose_pos": 0.6434,
+        "roll": 17.5374,
+        "mouth_ratio": 0.0136,
+        "lip_stretch": 0.0959,
+        "mouth_open": -0.00131,
+        "brow_raise": 0.0875,
+        "brow_furrow": 0.0159
+      },
+      {
+        "ear": 1.6435,
+        "nose_pos": 0.7154,
+        "roll": 17.4462,
+        "mouth_ratio": 0.0093,
+        "lip_stretch": 0.0736,
+        "mouth_open": -0.00068,
+        "brow_raise": 0.0813,
+        "brow_furrow": 0.0211
+      },
+      {
+        "ear": 1.5043,
+        "nose_pos": 0.6133,
+        "roll": 47.0766,
+        "mouth_ratio": 0.0665,
+        "lip_stretch": 0.0539,
+        "mouth_open": 0.00359,
+        "brow_raise": 0.0518,
+        "brow_furrow": 0.0351
+      },
+      {
+        "ear": 1.4074,
+        "nose_pos": 0.6169,
+        "roll": 17.0986,
+        "mouth_ratio": 0.0307,
+        "lip_stretch": 0.0582,
+        "mouth_open": 0.00179,
+        "brow_raise": 0.0587,
+        "brow_furrow": 0.0126
+      }
+    ]
+  },
+  "stress": {
+    "sample_count": 5,
+    "avg": {
+      "ear": 1.2135,
+      "nose_pos": 0.6727,
+      "roll": 10.7632,
+      "mouth_ratio": 0.0102,
+      "lip_stretch": 0.0986,
+      "mouth_open": 0.0,
+      "brow_raise": 0.1067,
+      "brow_furrow": 0.012
+    },
+    "range": {
+      "ear": {
+        "min": 1.0099,
+        "max": 1.4402
+      },
+      "nose_pos": {
+        "min": 0.6095,
+        "max": 0.7031
+      },
+      "roll": {
+        "min": 4.317,
+        "max": 18.5922
+      },
+      "mouth_ratio": {
+        "min": 0.0001,
+        "max": 0.0216
+      },
+      "lip_stretch": {
+        "min": 0.0954,
+        "max": 0.107
+      },
+      "mouth_open": {
+        "min": -0.0021,
+        "max": 0.0014
+      },
+      "brow_raise": {
+        "min": 0.0938,
+        "max": 0.1175
+      },
+      "brow_furrow": {
+        "min": 0.0017,
+        "max": 0.0259
+      }
+    },
+    "all_samples": [
+      {
+        "ear": 1.211,
+        "nose_pos": 0.6952,
+        "roll": 7.8043,
+        "mouth_ratio": 0.0001,
+        "lip_stretch": 0.0982,
+        "mouth_open": -1e-05,
+        "brow_raise": 0.1012,
+        "brow_furrow": 0.002
+      },
+      {
+        "ear": 1.2603,
+        "nose_pos": 0.6095,
+        "roll": 5.3454,
+        "mouth_ratio": 0.0122,
+        "lip_stretch": 0.096,
+        "mouth_open": 0.00117,
+        "brow_raise": 0.0938,
+        "brow_furrow": 0.0051
+      },
+      {
+        "ear": 1.1463,
+        "nose_pos": 0.7007,
+        "roll": 18.5922,
+        "mouth_ratio": 0.0142,
+        "lip_stretch": 0.0954,
+        "mouth_open": 0.00135,
+        "brow_raise": 0.1092,
+        "brow_furrow": 0.0259
+      },
+      {
+        "ear": 1.0099,
+        "nose_pos": 0.7031,
+        "roll": 4.317,
+        "mouth_ratio": 0.0031,
+        "lip_stretch": 0.107,
+        "mouth_open": -0.00033,
+        "brow_raise": 0.1175,
+        "brow_furrow": 0.0017
+      },
+      {
+        "ear": 1.4402,
+        "nose_pos": 0.655,
+        "roll": 17.7573,
+        "mouth_ratio": 0.0216,
+        "lip_stretch": 0.0963,
+        "mouth_open": -0.00208,
+        "brow_raise": 0.1119,
+        "brow_furrow": 0.0252
+      }
+    ]
+  }
+}

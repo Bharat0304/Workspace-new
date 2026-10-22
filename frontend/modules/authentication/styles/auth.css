@@ -1,0 +1,404 @@
+/* ============================================================
+   AUTHENTICATION — CSS Styles
+   Auth modal overlay, login card, Google button,
+   email form, loading states, animations.
+   ============================================================ */
+
+/* ── Modal Overlay ────────────────────────────────────────── */
+
+.auth-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+.auth-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* ── Login Card ───────────────────────────────────────────── */
+
+.auth-card {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    background: #0A0A0A;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 2.75rem 2.5rem 2.25rem;
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 24px 60px rgba(0, 0, 0, 0.6),
+        0 8px 20px rgba(0, 0, 0, 0.4);
+    transform: translateY(24px) scale(0.97);
+    transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.35s ease;
+    opacity: 0;
+    margin: 1rem;
+}
+
+.auth-overlay.active .auth-card {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* Close button */
+.auth-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255,255,255,0.3);
+    font-size: 1.4rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: color 0.2s ease, background 0.2s ease;
+    padding: 0;
+}
+
+.auth-close:hover {
+    color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.06);
+}
+
+/* Branding */
+.auth-brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2rem;
+}
+
+.auth-brand-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.auth-brand-logo svg {
+    color: var(--amber);
+}
+
+/* Heading */
+.auth-heading {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.55rem;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+}
+
+.auth-subheading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 2rem;
+}
+
+/* ── Google Button ────────────────────────────────────────── */
+
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.85rem 1.5rem;
+    background: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    letter-spacing: 0.01em;
+}
+
+.google-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0);
+    transition: background 0.2s ease;
+}
+
+.google-btn:hover {
+    background: #f5f5f5;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+    transform: translateY(-1px);
+}
+
+.google-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.google-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.google-btn-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.google-btn-text {
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Divider ──────────────────────────────────────────────── */
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.auth-divider-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+}
+
+.auth-divider-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* ── Email Form ───────────────────────────────────────────── */
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.auth-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+}
+
+.auth-input {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--white);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    outline: none;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    width: 100%;
+}
+
+.auth-input::placeholder {
+    color: rgba(255,255,255,0.2);
+}
+
+.auth-input:focus {
+    border-color: var(--amber);
+    background: rgba(217, 119, 6, 0.04);
+    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.08);
+}
+
+.auth-input.error {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08);
+}
+
+.auth-field-error {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--red);
+    display: none;
+}
+
+.auth-field-error.visible {
+    display: block;
+}
+
+.auth-submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--amber);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--black);
+    letter-spacing: 0.02em;
+    transition: all 0.25s ease;
+    margin-top: 0.4rem;
+}
+
+.auth-submit-btn:hover {
+    background: #f5a623;
+    box-shadow: 0 0 20px rgba(217,119,6,0.25);
+    transform: translateY(-1px);
+}
+
+.auth-submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ── Loading State ────────────────────────────────────────── */
+
+.auth-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.5rem 0;
+    text-align: center;
+}
+
+.auth-spinner {
+    width: 36px;
+    height: 36px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-top-color: var(--amber);
+    border-radius: 50%;
+    animation: authSpin 0.75s linear infinite;
+}
+
+@keyframes authSpin {
+    to { transform: rotate(360deg); }
+}
+
+.auth-loading-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+}
+
+/* ── Error Banner ─────────────────────────────────────────── */
+
+.auth-error-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.8rem 1rem;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+}
+
+.auth-error-banner.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.auth-error-banner-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    color: var(--red);
+    line-height: 1.5;
+}
+
+/* ── Privacy Note ─────────────────────────────────────────── */
+
+.auth-privacy {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.2);
+    text-align: center;
+    margin-top: 1.5rem;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+}
+
+.auth-privacy a {
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.auth-privacy a:hover {
+    color: rgba(255,255,255,0.7);
+}
+
+/* ── Toggle between Google and Email form ─────────────────── */
+
+.auth-toggle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.auth-toggle-link {
+    color: var(--amber);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
+    transition: opacity 0.2s ease;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.auth-toggle-link:hover {
+    opacity: 0.8;
+}

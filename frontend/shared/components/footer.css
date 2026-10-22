@@ -1,0 +1,71 @@
+/* ============================================
+   SHARED COMPONENT — FOOTER
+   ============================================ */
+
+.footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 0 1.5rem 0;
+    background: var(--black);
+}
+
+.footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+}
+
+.footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.footer-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+}
+
+.footer-link {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.6rem;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover { color: var(--white); }
+
+.footer-built {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 1rem;
+}
+
+.footer-bottom {
+    max-width: 1100px;
+    margin: 2rem auto 0 auto;
+    padding: 1rem 2rem 0 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.footer-bottom span {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+}

@@ -1,0 +1,750 @@
+/* ============================================================
+   ONBOARDING MODULE — Styles
+   Full-page onboarding overlay, progress bar, steps, option cards,
+   form fields, review cards, loading overlay.
+   ============================================================ */
+
+/* ── Onboarding Overlay ───────────────────────────────────── */
+
+.ob-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.ob-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* ── Layout ───────────────────────────────────────────────── */
+
+.ob-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 3rem 2rem 4rem;
+}
+
+.ob-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+}
+
+.ob-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ob-brand svg {
+    color: #D97706;
+}
+
+.ob-step-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.1em;
+}
+
+/* ── Progress Bar ─────────────────────────────────────────── */
+
+.ob-progress {
+    margin-bottom: 3.5rem;
+}
+
+.ob-progress-track {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.ob-progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    position: relative;
+    z-index: 1;
+}
+
+.ob-progress-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #0A0A0A;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.ob-progress-dot span {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+}
+
+.ob-progress-dot.active {
+    border-color: #D97706;
+    background: rgba(217,119,6,0.1);
+    box-shadow: 0 0 0 4px rgba(217,119,6,0.08);
+}
+
+.ob-progress-dot.active span {
+    color: #D97706;
+}
+
+.ob-progress-dot.completed {
+    background: #D97706;
+    border-color: #D97706;
+    color: #000;
+}
+
+.ob-progress-dot.completed svg {
+    color: #000;
+}
+
+.ob-progress-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    transition: background 0.4s ease;
+    margin-bottom: 1.6rem; /* align with dots */
+}
+
+.ob-progress-line.filled {
+    background: #D97706;
+}
+
+.ob-progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.25);
+    white-space: nowrap;
+    transition: color 0.3s ease;
+    position: absolute;
+    top: 40px;
+}
+
+.ob-progress-label.active {
+    color: #D97706;
+}
+
+/* ── Step Content ─────────────────────────────────────────── */
+
+.ob-step-content {
+    flex: 1;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.ob-step-content.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.ob-step-content.exit-left {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.ob-step-content.enter-right {
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+.ob-step-header {
+    margin-bottom: 2.5rem;
+}
+
+.ob-step-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #D97706;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.ob-step-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
+}
+
+.ob-step-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+}
+
+/* ── Profile Preview (Step 1) ─────────────────────────────── */
+
+.ob-profile-preview {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.25rem 1.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.ob-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(217,119,6,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: #111;
+}
+
+.ob-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ob-avatar-initials {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #D97706;
+}
+
+.ob-profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.ob-profile-name {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #fff;
+}
+
+.ob-profile-email {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.02em;
+}
+
+/* ── Form Grid (Step 1) ───────────────────────────────────── */
+
+.ob-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 560px) {
+    .ob-form-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Form Fields ──────────────────────────────────────────── */
+
+.ob-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.ob-form-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.35);
+}
+
+.ob-form-input {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: #fff;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ob-form-input::placeholder {
+    color: rgba(255,255,255,0.2);
+}
+
+.ob-form-input:focus {
+    border-color: #D97706;
+    background: rgba(217,119,6,0.04);
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.07);
+}
+
+.ob-form-input.error {
+    border-color: #EF4444;
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.07);
+}
+
+.ob-form-input.readonly {
+    color: rgba(255,255,255,0.3);
+    cursor: not-allowed;
+    background: rgba(255,255,255,0.02);
+}
+
+.ob-form-error {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    color: #EF4444;
+    display: none;
+}
+
+.ob-form-error.visible {
+    display: block;
+}
+
+/* ── Question Blocks ──────────────────────────────────────── */
+
+.ob-question-block {
+    margin-bottom: 2.5rem;
+}
+
+.ob-question {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.ob-question-error {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    color: #EF4444;
+    display: none;
+    margin-bottom: 0.75rem;
+}
+
+.ob-question-error.visible {
+    display: block;
+}
+
+/* ── Option Cards ─────────────────────────────────────────── */
+
+.ob-option-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.75rem;
+}
+
+.ob-option-card {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.6);
+    transition: all 0.2s ease;
+    position: relative;
+    text-align: left;
+}
+
+.ob-option-card:hover {
+    border-color: rgba(255,255,255,0.25);
+    color: #fff;
+    background: rgba(255,255,255,0.03);
+}
+
+.ob-option-card.selected {
+    border-color: #D97706;
+    color: #fff;
+    background: rgba(217,119,6,0.08);
+    box-shadow: 0 0 0 1px rgba(217,119,6,0.15);
+}
+
+.ob-option-emoji {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.ob-option-label {
+    font-weight: 500;
+}
+
+.ob-option-check {
+    display: none;
+    color: #D97706;
+    margin-left: 0.25rem;
+}
+
+.ob-option-card.selected .ob-option-check {
+    display: inline-flex;
+}
+
+/* ── Review Cards ─────────────────────────────────────────── */
+
+.ob-review-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.ob-review-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.25s ease;
+}
+
+.ob-review-card:hover {
+    border-color: rgba(255,255,255,0.12);
+}
+
+.ob-review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.ob-review-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ob-review-edit {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #D97706;
+    background: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s ease;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.ob-review-edit:hover {
+    opacity: 0.7;
+}
+
+.ob-review-rows {
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ob-review-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.ob-review-key {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    min-width: 110px;
+    flex-shrink: 0;
+}
+
+.ob-review-value {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.8);
+}
+
+.ob-review-empty {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    font-style: italic;
+}
+
+/* ── Create Workspace Block ───────────────────────────────── */
+
+.ob-create-block {
+    text-align: center;
+}
+
+.ob-create-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 2.5rem;
+    background: #D97706;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #000;
+    letter-spacing: 0.02em;
+    transition: all 0.25s ease;
+    box-shadow: 0 0 30px rgba(217,119,6,0.2);
+}
+
+.ob-create-btn:hover {
+    background: #f5a623;
+    box-shadow: 0 0 40px rgba(217,119,6,0.35);
+    transform: translateY(-2px);
+}
+
+.ob-create-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.ob-create-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.2);
+    margin-top: 0.8rem;
+    letter-spacing: 0.04em;
+}
+
+/* ── Navigation Footer ────────────────────────────────────── */
+
+.ob-nav-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.ob-btn-back {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color 0.2s ease;
+    padding: 0;
+}
+
+.ob-btn-back:hover {
+    color: rgba(255,255,255,0.7);
+}
+
+.ob-btn-back:disabled {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ob-btn-continue {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.8rem;
+    background: transparent;
+    border: 1px solid #D97706;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: #D97706;
+    letter-spacing: 0.04em;
+    transition: all 0.25s ease;
+}
+
+.ob-btn-continue:hover {
+    background: #D97706;
+    color: #000;
+    box-shadow: 0 0 20px rgba(217,119,6,0.2);
+}
+
+/* ── Loading Overlay ──────────────────────────────────────── */
+
+.ob-loading-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.ob-loading-overlay.active {
+    opacity: 1;
+}
+
+.ob-loading-overlay.fade-out {
+    opacity: 0;
+}
+
+.ob-loading-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    text-align: center;
+}
+
+.ob-loading-brand {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(217,119,6,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(217,119,6,0.2);
+}
+
+.ob-loading-heading {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: #fff;
+    letter-spacing: -0.01em;
+}
+
+.ob-loading-stages {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 240px;
+    text-align: left;
+}
+
+.ob-loading-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0.2;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transform: translateY(4px);
+}
+
+.ob-loading-item.done {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ob-loading-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(217,119,6,0.15);
+    border: 1px solid rgba(217,119,6,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #D97706;
+    flex-shrink: 0;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.ob-loading-item.done .ob-loading-check {
+    background: #D97706;
+    border-color: #D97706;
+    color: #000;
+}
+
+.ob-loading-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.04em;
+}
+
+.ob-loading-pulse {
+    position: relative;
+    width: 60px;
+    height: 60px;
+}
+
+.ob-loading-ring {
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(217,119,6,0.2);
+    border-radius: 50%;
+    animation: obPulseRing 2s ease-out infinite;
+}
+
+.ob-loading-ring-2 {
+    animation-delay: 0.8s;
+}
+
+@keyframes obPulseRing {
+    0% { transform: scale(0.8); opacity: 0.6; }
+    100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* ── Shared Animations ────────────────────────────────────── */
+
+@keyframes obFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.ob-step {
+    animation: obFadeIn 0.35s ease;
+}

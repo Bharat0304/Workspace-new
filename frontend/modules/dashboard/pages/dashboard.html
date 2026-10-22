@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WorkSpace Dashboard — Study Command Center. Monitor focus, track consistency, and view session progress.">
+    <title>WorkSpace — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Outfit:wght@400;700;800;900&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../shared/styles/variables.css">
+    <link rel="stylesheet" href="../../../shared/styles/reset.css">
+    <link rel="stylesheet" href="../../../shared/styles/toast.css">
+    <link rel="stylesheet" href="../../../shared/components/navbar.css">
+    <link rel="stylesheet" href="../components/ConsistencyHeatmap/consistencyHeatmap.css">
+    <link rel="stylesheet" href="../components/FocusMonitoring/focusMonitoring.css">
+    <link rel="stylesheet" href="../components/ProductivityGrowth/productivityGrowth.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+</head>
+<body>
+
+    <!-- ========== APP SHELL NAVBAR ========== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="../../../index.html" class="nav-logo">
+                WORK<svg class="logo-bulb" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21h6M12 3a6 6 0 0 0-4 10.5V17h8v-3.5A6 6 0 0 0 12 3z"/><line x1="10" y1="17" x2="10" y2="21"/><line x1="14" y1="17" x2="14" y2="21"/></svg>SPACE
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#" class="nav-link active">Dashboard</a>
+                <a href="../../timetable/pages/timetable.html" class="nav-link">Study Sheet</a>
+                <a href="https://chromewebstore.google.com/detail/workspace-ai-tab-monitor/gkpkmkfcneilbmkekpgnifklkfchbaib" target="_blank" rel="noopener noreferrer" class="nav-link nav-ext-link">Get Extension ↗</a>
+            </div>
+            <div class="nav-actions">
+                <a href="https://chromewebstore.google.com/detail/workspace-ai-tab-monitor/gkpkmkfcneilbmkekpgnifklkfchbaib" target="_blank" rel="noopener noreferrer" class="btn-amber nav-ext-btn" id="navExtensionBtn" title="Install WorkSpace AI Tab Monitor Chrome Extension">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: -2px;">
+                        <circle cx="12" cy="12" r="10"/>
+                        <circle cx="12" cy="12" r="4"/>
+                        <line x1="21.17" y1="8" x2="12" y2="8"/>
+                        <line x1="3.95" y1="6.06" x2="8.54" y2="14"/>
+                        <line x1="10.88" y1="21.94" x2="15.46" y2="14"/>
+                    </svg>
+                    Get Extension
+                </a>
+                <a href="#" class="btn-ghost" id="navLogoutBtn">Log Out</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile overlay -->
+    <div class="mobile-overlay" id="mobileOverlay">
+        <a href="#" class="mobile-link active">Dashboard</a>
+        <a href="../../timetable/pages/timetable.html" class="mobile-link">Study Sheet</a>
+        <a href="https://chromewebstore.google.com/detail/workspace-ai-tab-monitor/gkpkmkfcneilbmkekpgnifklkfchbaib" target="_blank" rel="noopener noreferrer" class="mobile-link">Get Extension ↗</a>
+        <a href="#" class="btn-amber mobile-cta" id="mobileLogoutBtn">Log Out</a>
+    </div>
+
+    <!-- ========== DASHBOARD MAIN CONTAINER ========== -->
+    <main class="db-container" id="dashboardMain">
+        <!-- Rendered dynamically via index.js -->
+    </main>
+
+    <script type="module" src="../index.js"></script>
+</body>
+</html>

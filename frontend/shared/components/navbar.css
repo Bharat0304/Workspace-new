@@ -1,0 +1,134 @@
+/* ============================================
+   SHARED COMPONENT — NAVBAR
+   ============================================ */
+
+.navbar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 64px;
+    z-index: 100;
+    transition: background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
+    border-bottom: 1px solid transparent;
+}
+
+.navbar.scrolled {
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+}
+
+.nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+}
+
+.nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.logo-bulb {
+    transition: filter 0.3s ease, stroke 0.3s ease;
+}
+
+.nav-logo:hover .logo-bulb {
+    stroke: var(--amber);
+    filter: drop-shadow(0 0 6px var(--amber));
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.nav-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover { color: var(--white); }
+.nav-link.active { color: var(--amber); }
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--white);
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+.mobile-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background: var(--black);
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.mobile-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.mobile-link {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.mobile-link:hover { color: var(--amber); }
+.mobile-cta { margin-top: 1rem; }
+
+@media (max-width: 768px) {
+    .nav-links, .nav-actions { display: none; }
+    .hamburger { display: flex; }
+}

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extension Blocking Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: #4f46e5;
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .success { background: #dcfce7; color: #166534; }
+        .error { background: #fef2f2; color: #dc2626; }
+        .info { background: #eff6ff; color: #2563eb; }
+        .warning { background: #fef3c7; color: #92400e; }
+        .log {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🚫 WorkSpace AI Extension Blocking Test</h1>
+        <p>Test if the browser extension properly blocks distracting sites like Instagram.</p>
+        
+        <div class="test-section">
+            <h2>🔧 Extension Status</h2>
+            <button class="test-button" onclick="checkExtensionStatus()">Check Extension</button>
+            <div id="extensionStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🚀 Session Test</h2>
+            <button class="test-button" onclick="startTestSession()">Start Test Session</button>
+            <button class="test-button" onclick="stopTestSession()">Stop Test Session</button>
+            <div id="sessionStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🌐 Site Blocking Test</h2>
+            <button class="test-button" onclick="testInstagramBlocking()">Test Instagram Blocking</button>
+            <button class="test-button" onclick="openInstagram()">Open Instagram</button>
+            <div id="blockingStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>📊 Test Results</h2>
+            <div class="log" id="testLog"></div>
+        </div>
+    </div>
+
+    <script>
+        let testLog = [];
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${type.toUpperCase()}: ${message}`;
+            testLog.push(logEntry);
+            updateLogDisplay();
+            console.log(logEntry);
+        }
+        
+        function updateLogDisplay() {
+            document.getElementById('testLog').textContent = testLog.join('\n');
+            const logElement = document.getElementById('testLog');
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        function showStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        async function checkExtensionStatus() {
+            log('Checking extension status...');
+            showStatus('extensionStatus', 'Checking extension...', 'info');
+            
+            try {
+                // Check if extension is available
+                if (chrome && chrome.runtime) {
+                    log('✅ Chrome extension API available');
+                    
+                    // Try to send a test message
+                    chrome.runtime.sendMessage({
+                        type: 'get_session_status'
+                    }, (response) => {
+                        if (chrome.runtime.lastError) {
+                            log(`❌ Extension error: ${chrome.runtime.lastError.message}`);
+                            showStatus('extensionStatus', '❌ Extension not responding', 'error');
+                        } else {
+                            log(`✅ Extension response: ${JSON.stringify(response)}`);
+                            showStatus('extensionStatus', '✅ Extension is working', 'success');
+                        }
+                    });
+                } else {
+                    log('❌ Chrome extension API not available');
+                    showStatus('extensionStatus', '❌ Extension API not available', 'error');
+                }
+            } catch (error) {
+                log(`❌ Extension check failed: ${error.message}`);
+                showStatus('extensionStatus', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function startTestSession() {
+            log('Starting test session...');
+            showStatus('sessionStatus', 'Starting session...', 'info');
+            
+            try {
+                chrome.runtime.sendMessage({
+                    type: 'start_session'
+                }, (response) => {
+                    if (chrome.runtime.lastError) {
+                        log(`❌ Failed to start session: ${chrome.runtime.lastError.message}`);
+                        showStatus('sessionStatus', '❌ Failed to start session', 'error');
+                    } else {
+                        log('✅ Test session started');
+                        showStatus('sessionStatus', '✅ Session started - blocking is now active', 'success');
+                        
+                        // Test blocking after a short delay
+                        setTimeout(() => {
+                            log('🔍 Testing blocking functionality...');
+                        }, 2000);
+                    }
+                });
+            } catch (error) {
+                log(`❌ Session start error: ${error.message}`);
+                showStatus('sessionStatus', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function stopTestSession() {
+            log('Stopping test session...');
+            showStatus('sessionStatus', 'Stopping session...', 'info');
+            
+            try {
+                chrome.runtime.sendMessage({
+                    type: 'stop_session'
+                }, (response) => {
+                    if (chrome.runtime.lastError) {
+                        log(`❌ Failed to stop session: ${chrome.runtime.lastError.message}`);
+                        showStatus('sessionStatus', '❌ Failed to stop session', 'error');
+                    } else {
+                        log('✅ Test session stopped');
+                        showStatus('sessionStatus', '✅ Session stopped - blocking is now inactive', 'success');
+                    }
+                });
+            } catch (error) {
+                log(`❌ Session stop error: ${error.message}`);
+                showStatus('sessionStatus', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testInstagramBlocking() {
+            log('Testing Instagram blocking...');
+            showStatus('blockingStatus', 'Testing Instagram blocking...', 'info');
+            
+            // Simulate visiting Instagram
+            const testUrl = 'https://www.instagram.com';
+            const testDomain = 'instagram.com';
+            
+            log(`🔍 Testing domain: ${testDomain}`);
+            
+            // Check if extension would block this
+            chrome.runtime.sendMessage({
+                type: 'test_blocking',
+                data: { url: testUrl, domain: testDomain }
+            }, (response) => {
+                if (chrome.runtime.lastError) {
+                    log(`❌ Blocking test failed: ${chrome.runtime.lastError.message}`);
+                    showStatus('blockingStatus', '❌ Blocking test failed', 'error');
+                } else {
+                    log(`✅ Blocking test response: ${JSON.stringify(response)}`);
+                    
+                    if (response && response.shouldBlock) {
+                        log('✅ Instagram would be blocked');
+                        showStatus('blockingStatus', '✅ Instagram blocking is working', 'success');
+                    } else {
+                        log('❌ Instagram would NOT be blocked');
+                        showStatus('blockingStatus', '❌ Instagram blocking is NOT working', 'error');
+                    }
+                }
+            });
+        }
+        
+        function openInstagram() {
+            log('Opening Instagram in new tab...');
+            window.open('https://www.instagram.com', '_blank');
+            showStatus('blockingStatus', '🌐 Instagram opened - check if it gets blocked', 'warning');
+        }
+        
+        // Auto-check extension on page load
+        window.addEventListener('load', () => {
+            log('Extension blocking test page loaded');
+            updateLogDisplay();
+            
+            // Check extension status after a short delay
+            setTimeout(checkExtensionStatus, 1000);
+        });
+    </script>
+</body>
+</html>

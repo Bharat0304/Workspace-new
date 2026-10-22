@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WorkSpace — Timetable Test Suite</title>
+    <style>
+        body {
+            background: #000;
+            color: #ccc;
+            font-family: 'DM Sans', sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            color: #D97706;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            margin-bottom: 30px;
+        }
+        .group {
+            background: #0A0A0A;
+            border: 1px solid #1C1C1C;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .group-header {
+            background: #111;
+            padding: 10px 20px;
+            color: #fff;
+            font-weight: bold;
+            border-bottom: 1px solid #1C1C1C;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tests {
+            padding: 10px 20px;
+        }
+        .test-entry {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+        }
+        .badge {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .badge.pass {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22C55E;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .badge.fail {
+            background: rgba(239, 68, 68, 0.15);
+            color: #EF4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <h1>Timetable Module Tests</h1>
+    <div class="subtitle">AUTOMATED TESTING WORKSPACE [ v0.2.0 ]</div>
+
+    <div id="results">Running test assertions...</div>
+
+    <script type="module">
+        import { runTests } from './timetable.test.js';
+
+        const resultsEl = document.getElementById('results');
+        resultsEl.innerHTML = '';
+
+        class HtmlReporter {
+            constructor() {
+                this.currentGroupEl = null;
+                this.passes = 0;
+                this.fails = 0;
+            }
+
+            group(name, fn) {
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'group';
+                
+                const header = document.createElement('div');
+                header.className = 'group-header';
+                header.innerHTML = `<span>${name}</span>`;
+                groupDiv.appendChild(header);
+                
+                const testList = document.createElement('div');
+                testList.className = 'tests';
+                groupDiv.appendChild(testList);
+                
+                this.currentGroupEl = testList;
+                
+                resultsEl.appendChild(groupDiv);
+                
+                const startPasses = this.passes;
+                const startFails = this.fails;
+                
+                fn();
+                
+                const groupPasses = this.passes - startPasses;
+                const groupFails = this.fails - startFails;
+                
+                const stat = document.createElement('span');
+                stat.style.fontSize = '0.75rem';
+                stat.style.color = groupFails > 0 ? '#EF4444' : '#22C55E';
+                stat.textContent = `${groupPasses} passed, ${groupFails} failed`;
+                header.appendChild(stat);
+            }
+
+            assert(condition, desc) {
+                const entry = document.createElement('div');
+                entry.className = 'test-entry';
+                
+                if (condition) {
+                    this.passes++;
+                    entry.innerHTML = `<span class="badge pass">Pass</span> <span>${desc}</span>`;
+                } else {
+                    this.fails++;
+                    entry.innerHTML = `<span class="badge fail">Fail</span> <span style="color:#EF4444">${desc}</span>`;
+                }
+                
+                if (this.currentGroupEl) {
+                    this.currentGroupEl.appendChild(entry);
+                } else {
+                    resultsEl.appendChild(entry);
+                }
+            }
+        }
+
+        const reporter = new HtmlReporter();
+        try {
+            runTests(reporter);
+            
+            const summaryDiv = document.createElement('div');
+            summaryDiv.style.cssText = 'margin-top: 30px; font-weight: bold; font-family: "Outfit", sans-serif; font-size: 1.1rem;';
+            summaryDiv.innerHTML = `Tests completed. Total: ${reporter.passes + reporter.fails} | <span style="color:#22C55E">${reporter.passes} passed</span> | <span style="color:#EF4444">${reporter.fails} failed</span>`;
+            resultsEl.appendChild(summaryDiv);
+        } catch (err) {
+            resultsEl.innerHTML += `<div style="color:#EF4444; margin-top:20px; font-weight:bold;">Execution Error: ${err.message}<pre>${err.stack}</pre></div>`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,785 @@
+/* ============================================================
+   DASHBOARD MODULE — Stylesheet
+   Study Command Center. Dark, clean, minimal.
+   Follows WorkSpace design system variables.
+   ============================================================ */
+
+/* ── Shell ────────────────────────────────────────────────── */
+
+.db-container {
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 6rem 2rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-height: calc(100vh - 64px);
+    box-sizing: border-box;
+}
+
+/* ── Section Base ─────────────────────────────────────────── */
+
+.db-section {
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 1.4rem 1.6rem;
+}
+
+.db-section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.db-section-loading {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    padding: 2rem;
+    text-align: center;
+}
+
+/* ── Command Center Layout ────────────────────────────────── */
+
+.db-row-top {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.db-row-bottom {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 1.5rem;
+    align-items: stretch; /* equal height columns alignment */
+}
+
+.db-col-heatmap,
+.db-col-monitor {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.db-col-growth,
+#dbGrowthMount {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.db-col-session {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100%;
+    justify-content: space-between; /* distributes Session Timer & Current Session top/bottom */
+}
+
+@media (max-width: 1024px) {
+    .db-row-top,
+    .db-row-bottom {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Consistency Tracker ──────────────────────────────────── */
+
+.db-consistency-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+}
+
+.db-consistency-header .db-section-label {
+    margin-bottom: 0;
+}
+
+.db-consistency-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.db-meta-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.db-meta-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    color: var(--white);
+    font-weight: 500;
+}
+
+.db-meta-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.db-meta-divider {
+    width: 1px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Contribution Heatmap ─────────────────────────────────── */
+
+.db-heatmap-mount {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.hm-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: flex-start;
+}
+
+.hm-svg {
+    display: block;
+    overflow: visible;
+}
+
+/* Heatmap cell states */
+.hm-cell {
+    transition: opacity 0.15s ease;
+}
+.hm-cell--empty  { fill: rgba(255, 255, 255, 0.04); }
+.hm-cell--light  { fill: rgba(34, 197, 94, 0.30); }
+.hm-cell--mid    { fill: rgba(34, 197, 94, 0.60); }
+.hm-cell--full   { fill: rgba(34, 197, 94, 0.90); }
+
+.hm-cell:hover { opacity: 0.75; cursor: default; }
+
+/* SVG text labels */
+.hm-label-day {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    fill: rgba(255, 255, 255, 0.25);
+    text-anchor: end;
+    dominant-baseline: middle;
+}
+
+.hm-label-month {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    fill: rgba(255, 255, 255, 0.3);
+    text-anchor: start;
+    dominant-baseline: auto;
+}
+
+/* Legend row */
+.hm-legend {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.hm-legend-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+}
+
+.hm-legend-cell {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+/* ── Productivity Growth ──────────────────────────────────── */
+
+.db-growth-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.db-score-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 120px;
+}
+
+.db-score-number {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 4rem;
+    line-height: 1;
+    color: var(--white);
+    letter-spacing: -0.04em;
+}
+
+.db-score-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.db-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    margin-top: 0.4rem;
+}
+
+.db-trend--up   { color: var(--green); }
+.db-trend--down { color: var(--red); }
+
+.db-trend-icon {
+    font-size: 0.9rem;
+}
+
+.db-chart-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.db-chart-caption {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+}
+
+/* Sparkline SVG */
+.db-sparkline {
+    display: block;
+    overflow: visible;
+}
+
+.db-spark-grid {
+    stroke: rgba(255, 255, 255, 0.05);
+    stroke-width: 1;
+}
+
+.db-spark-area {
+    fill: rgba(34, 197, 94, 0.07);
+}
+
+.db-spark-line {
+    fill: none;
+    stroke: var(--green);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.db-spark-dot {
+    fill: var(--green);
+}
+
+/* ── Focus Monitoring ─────────────────────────────────────── */
+
+.db-monitoring {
+    padding-bottom: 1.2rem;
+}
+
+.db-cam-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    max-height: 180px;
+    background: #080810;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(80, 190, 255, 0.12);
+    margin-bottom: 1rem;
+}
+
+.db-cam-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.db-cam-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(239, 68, 68, 0.85);
+    color: #fff;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    backdrop-filter: blur(4px);
+}
+
+.db-monitor-status {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.db-status-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.db-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: dbStatusPulse 2s ease-in-out infinite;
+}
+
+.db-status-dot--green {
+    background: var(--green);
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
+}
+
+.db-status-dot--red {
+    background: var(--red);
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
+    animation: none;
+}
+
+.db-status-text {
+    flex: 1;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.83rem;
+    color: var(--text-body);
+}
+
+.db-status-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--green);
+}
+
+/* ── Session Timer ────────────────────────────────────────── */
+
+.db-timer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.db-timer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.db-timer-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+}
+
+.db-timer-expand-icon {
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.db-timer-expand-icon:hover {
+    color: var(--white);
+}
+
+.db-timer-circle-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0.5rem auto 1rem;
+}
+
+.db-timer-svg {
+    display: block;
+    overflow: visible;
+}
+
+.db-timer-track {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.03);
+}
+
+.db-timer-progress {
+    fill: none;
+    stroke: rgba(59, 130, 246, 1); /* Blue progress accent */
+    transition: stroke-dashoffset 1s linear;
+}
+
+.db-timer-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    pointer-events: none;
+}
+
+.db-timer-digits {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.55rem;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1.1;
+}
+
+.db-timer-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+.db-timer-chip-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+    width: 100%;
+}
+
+.db-timer-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-body);
+}
+
+.db-timer-chip-bell {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* ── Current Session ──────────────────────────────────────── */
+
+.db-session-empty {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    padding: 0.5rem 0;
+}
+
+.db-session-subject {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.8rem;
+    color: var(--white);
+    margin-bottom: 0.2rem;
+}
+
+.db-session-topic {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+.db-session-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.db-session-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.db-session-row-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.db-session-row-value {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-body);
+}
+
+.db-session-end {
+    font-family: 'DM Mono', monospace;
+    color: #f97316; /* Orange Ends text */
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* ── Loading / Error States ───────────────────────────────── */
+
+.db-loading-state,
+.db-error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 40vh;
+}
+
+.db-loading-spinner {
+    width: 28px;
+    height: 28px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--amber);
+    border-radius: 50%;
+    animation: dbSpin 0.8s linear infinite;
+}
+
+.db-loading-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+}
+
+.db-error-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.db-error-retry {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: var(--text-body);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.db-error-retry:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--white);
+}
+
+/* ── Animations ───────────────────────────────────────────── */
+
+@keyframes dbSpin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes dbStatusPulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.45; }
+}
+
+@keyframes dbFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.db-section {
+    animation: dbFadeIn 0.3s ease;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+    .db-command-center {
+        grid-template-columns: 1fr;
+    }
+
+    .db-col-right {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .db-container {
+        padding: 5rem 1rem 3rem;
+    }
+
+    .db-col-right {
+        grid-template-columns: 1fr;
+    }
+
+    .db-consistency-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+
+    .db-consistency-meta {
+        align-self: flex-start;
+    }
+
+    .db-score-number {
+        font-size: 3rem;
+    }
+
+    .db-timer-display {
+        font-size: 2.6rem;
+    }
+}
+
+/* ── Extension Integration Banner ─────────────────────────── */
+
+.db-extension-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    background: linear-gradient(135deg, rgba(217, 119, 6, 0.08) 0%, rgba(13, 13, 13, 0.98) 100%);
+    border: 1px solid rgba(217, 119, 6, 0.28);
+    border-radius: 10px;
+    padding: 1.1rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 35px rgba(217, 119, 6, 0.04);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.db-extension-banner:hover {
+    border-color: rgba(217, 119, 6, 0.45);
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.5), 0 0 45px rgba(217, 119, 6, 0.1);
+    transform: translateY(-1px);
+}
+
+.db-extension-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--amber);
+}
+
+.db-extension-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+}
+
+.db-extension-icon-wrap {
+    width: 42px;
+    height: 42px;
+    border-radius: 9px;
+    background: rgba(217, 119, 6, 0.12);
+    border: 1px solid rgba(217, 119, 6, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--amber);
+    flex-shrink: 0;
+    box-shadow: 0 0 15px rgba(217, 119, 6, 0.15);
+}
+
+.db-extension-banner-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.db-extension-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+}
+
+.db-extension-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.01em;
+}
+
+.db-extension-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.18rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(217, 119, 6, 0.18);
+    color: #FBBF24;
+    border: 1px solid rgba(217, 119, 6, 0.32);
+}
+
+.db-extension-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.db-extension-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 0.6rem 1.3rem;
+    font-size: 0.84rem;
+    box-shadow: 0 0 16px rgba(217, 119, 6, 0.15);
+}
+
+.nav-ext-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.42rem 0.95rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+.nav-ext-link {
+    color: #FBBF24 !important;
+}
+
+.nav-ext-link:hover {
+    color: var(--white) !important;
+}
+
+@media (max-width: 820px) {
+    .db-extension-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .db-extension-btn {
+        width: 100%;
+    }
+}
+
